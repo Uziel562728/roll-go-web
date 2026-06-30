@@ -1,0 +1,68 @@
+[
+  {
+    "id": "clasico-salmon-palta",
+    "nombre": "Clásico Salmón Palta",
+    "descripcion": "El roll que nunca falla: salmón fresco y cremosa palta en perfecta armonía.",
+    "categoria": "clasico",
+    "imagen": "./images/Clásico Salmón Palta.png",
+    "imagenTubo": "./images/tubos fotos/clasico salmon palta tubo .png",
+    "tags": ["Salmón", "Palta"],
+    "destacado": false,
+    "ingredientes": ["Salmón", "Palta", "arroz", "alga"]
+  },
+  {
+    "id": "salmon-palta-philadelphia",
+    "nombre": "Salmón Palta Philadelphia",
+    "descripcion": "El clásico potenciado con la cremosidad inconfundible del queso Philadelphia.",
+    "categoria": "clasico",
+    "imagen": "./images/Salmón Palta Philadelphia.png",
+    "imagenTubo": "./images/tubos fotos/Salmón Palta Philadelphia tubo .png",
+    "tags": ["Salmón", "Palta", "Philadelphia"],
+    "destacado": false,
+    "ingredientes": ["Salmón", "Palta", "Queso", "arroz", "alga"]
+  },
+  {
+    "id": "atun-mayo-spicy-verdeo",
+    "nombre": "Atún Mayo Spicy Verdeo",
+    "descripcion": "Atún, mayo picante y verdeo fresco. Para los que buscan el kick perfecto en cada bocado.",
+    "categoria": "clasico",
+    "imagen": "./images/Atún Mayo Spicy Verdeo.png",
+    "imagenTubo": "./images/tubos fotos/Atún Mayo Spicy Verdeo tubo .png",
+    "tags": ["Atún", "Mayo Spicy", "Verdeo"],
+    "destacado": false,
+    "ingredientes": ["Atún", "Mayonesa", "Verdeo", "arroz", "alga"]
+  },
+  {
+    "id": "veggie-rucula-champi-tomate-seco",
+    "nombre": "Veggie Rúcula Champiñón Tomate Seco",
+    "descripcion": "Rúcula fresca, champiñón salteado y tomate seco. Una opción plant-based irresistible.",
+    "categoria": "veggie",
+    "imagen": "./images/Veggie Rúcula Champiñón Tomate Seco.png",
+    "imagenTubo": "./images/tubos fotos/Veggie Rúcula Champiñón Tomate Seco tubo .png",
+    "tags": ["Rúcula", "Champiñón", "Tomate Seco"],
+    "destacado": false,
+    "ingredientes": ["Rúcula", "Champiñón", "Tomate Seco", "arroz", "alga"]
+  },
+  {
+    "id": "panizado-salmon-palta",
+    "nombre": "Panizado Salmón Palta",
+    "descripcion": "Salmón y palta cubiertos con panko crocante japonés. El contraste de texturas perfecto.",
+    "categoria": "panizado",
+    "imagen": "./images/Panizado Salmón Palta.png",
+    "imagenTubo": "./images/tubos fotos/Panizado Salmón Palta tubo .png",
+    "tags": ["Salmón", "Palta", "Panko"],
+    "destacado": false,
+    "ingredientes": ["Salmón", "Palta", "Panko", "arroz", "alga"]
+  },
+  {
+    "id": "panizado-salmon-palta-philadelphia",
+    "nombre": "Panizado Salmón Palta Philadelphia",
+    "descripcion": "El favorito de la casa: salmón, palta y Philadelphia todo envuelto en un panko dorado irresistible.",
+    "categoria": "panizado",
+    "imagen": "./images/Panizado Salmón Palta Philadelphia.png",
+    "imagenTubo": "./images/tubos fotos/Panizado Salmón Palta Philadelphia tubo .png",
+    "tags": ["Salmón", "Palta", "Philadelphia", "Panko"],
+    "destacado": true,
+    "ingredientes": ["Salmón", "Palta", "Queso", "Panko", "arroz", "alga"]
+  }
+]

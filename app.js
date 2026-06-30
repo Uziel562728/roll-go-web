@@ -6,9 +6,17 @@
 'use strict';
 
 /* ── Constants ───────────────────────────────────────────── */
-const API_BASE  = '';   // same origin (Express serves at /)
-const WA_URL    = 'https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go';
+const DATA_PATHS = {
+  menu: './data/menu.json',
+  business: './data/business.json'
+};
 const CAT_LABEL = { clasico: 'Clásico', panizado: 'Panizado', veggie: 'Veggie' };
+let businessConfig = {
+  nombre: 'Roll & Go',
+  whatsapp: '1151816111',
+  whatsappFull: '541151816111',
+  direccion: 'Terrada 592'
+};
 
 
 /* ─────────────────────────────────────────────────────────
@@ -393,14 +401,50 @@ function filterCards(filter) {
 /* ─────────────────────────────────────────────────────────
    MODULE: API FETCH
    ───────────────────────────────────────────────────────── */
-async function apiFetch(endpoint, options = {}) {
-  const url = `${API_BASE}${endpoint}`;
-  const res = await fetch(url, options);
+async function fetchJson(path) {
+  const res = await fetch(path, { cache: 'no-store' });
   if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.error || `API Error ${res.status}: ${endpoint}`);
+    throw new Error(`No se pudo cargar ${path}`);
   }
   return res.json();
+}
+
+async function loadBusinessConfig() {
+  try {
+    businessConfig = { ...businessConfig, ...await fetchJson(DATA_PATHS.business) };
+  } catch (err) {
+    console.warn('[RollGo] Business data fallback:', err);
+  }
+}
+
+function getWhatsAppUrl(message) {
+  return `https://wa.me/${businessConfig.whatsappFull}?text=${encodeURIComponent(message)}`;
+}
+
+function buildOrderMessage({ nombre, telefono, productos, cantidades, notas, direccion }) {
+  const lines = [
+    '🍣 *Nuevo Pedido — Roll & Go*',
+    '',
+    `👤 *Nombre:* ${nombre}`,
+    `📞 *Teléfono:* ${telefono}`,
+    '',
+    '*Productos:*',
+    ...productos.map((producto, index) => `  • ${producto} ×${cantidades[index] || 1} (Tubo de 10 u.)`)
+  ];
+
+  if (notas) lines.push('', `📝 *Notas:* ${notas}`);
+  if (direccion) lines.push(`📍 *Dirección:* ${direccion}`);
+  return lines.join('\n');
+}
+
+function buildContactMessage({ nombre, telefono, mensaje }) {
+  return [
+    '💬 *Consulta — Roll & Go*',
+    '',
+    `👤 *Nombre:* ${nombre}`,
+    `📞 *Teléfono:* ${telefono}`,
+    `📝 *Mensaje:* ${mensaje}`
+  ].join('\n');
 }
 
 function cleanText(value) {
@@ -651,7 +695,7 @@ function renderCartItems(animate = false) {
     li.dataset.id = item.id;
     li.style.setProperty('--item-index', index);
     li.innerHTML = `
-      <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img" onerror="this.src='/images/roll-go-producto.jpg'" />
+      <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img" onerror="this.src='./images/logo-roll-go.png'" />
       <div class="cart-item-info">
         <h4 class="cart-item-name">${item.nombre}</h4>
         <p class="cart-item-desc">${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · Tubo de 10 piezas</p>
@@ -843,7 +887,7 @@ function buildCard(product) {
 
   article.innerHTML = `
     <div class="card-img">
-      <a href="/producto/${product.id}">
+      <a href="./product.html?id=${encodeURIComponent(product.id)}">
         <img
           src="${product.imagen}"
           alt="${product.nombre}"
@@ -851,7 +895,7 @@ function buildCard(product) {
           loading="lazy"
           width="400"
           height="300"
-          onerror="this.src='/images/roll-go-producto.jpg'"
+          onerror="this.src='./images/logo-roll-go.png'"
         />
         ${product.imagenTubo ? `
         <img
@@ -867,7 +911,7 @@ function buildCard(product) {
       <span class="${badgeClass}">${badgeLabel}</span>
     </div>
     <div class="card-body">
-      <h3 class="card-name"><a href="/producto/${product.id}">${product.nombre}</a></h3>
+      <h3 class="card-name"><a href="./product.html?id=${encodeURIComponent(product.id)}">${product.nombre}</a></h3>
       <p class="card-desc">${product.descripcion}</p>
       <span class="card-presentation">📦 Presentación: Tubo de 10 piezas</span>
       <div class="card-tags">${tagsHtml}</div>
@@ -888,7 +932,7 @@ function buildCard(product) {
     if (e.target.closest('.card-add-container') || e.target.closest('.btn-qty-add-trigger') || e.target.closest('.card-qty-control')) {
       return;
     }
-    window.location.href = `/producto/${product.id}`;
+    window.location.href = `./product.html?id=${encodeURIComponent(product.id)}`;
   });
 
   article.querySelector('.btn-qty-add-trigger').addEventListener('click', (e) => {
@@ -937,13 +981,13 @@ async function loadMenu() {
   grid.innerHTML = '';
 
   try {
-    const data = await apiFetch('/api/menu');
+    const products = await fetchJson(DATA_PATHS.menu);
 
-    if (!data.success || !data.products?.length) {
+    if (!Array.isArray(products) || !products.length) {
       throw new Error('Menú vacío');
     }
 
-    const cards = data.products.map(product => {
+    const cards = products.map(product => {
       const card = buildCard(product);
       grid.appendChild(card);
       return card;
@@ -980,9 +1024,9 @@ async function loadMenu() {
     });
 
   } catch (err) {
-    console.error('[RollGo] Menu load error:', err);
+    console.warn('[RollGo] Menu load error:', err);
     loading?.classList.add('hidden');
-    error?.classList.remove('hidden');
+    grid.classList.remove('hidden');
   }
 }
 
@@ -1118,32 +1162,24 @@ function initCartSidebarUI() {
     const cantidades = cart.map(item => item.qty);
 
     try {
-      const res = await apiFetch('/api/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre,
-          telefono,
-          productos,
-          cantidades,
-          notes: notes,
-          direccion: isDelivery ? address : 'Retiro en el local (Terrada 592)'
-        })
-      });
+      const whatsappUrl = getWhatsAppUrl(buildOrderMessage({
+        nombre,
+        telefono,
+        productos,
+        cantidades,
+        notas: notes,
+        direccion: isDelivery ? address : `Retiro en el local (${businessConfig.direccion})`
+      }));
 
-      if (res.success && res.whatsappUrl) {
-        window.open(res.whatsappUrl, '_blank');
-        clearCart();
-        toggleCart(false);
-        cartForm.reset();
-        updateAddressVisibility();
-      } else {
-        throw new Error(res.error || 'Error al procesar la orden.');
-      }
+      window.open(whatsappUrl, '_blank');
+      clearCart();
+      toggleCart(false);
+      cartForm.reset();
+      updateAddressVisibility();
     } catch (err) {
       console.error('[RollGo] Order submit error:', err);
       if (errorDiv) {
-        errorDiv.textContent = err.message || 'Error al enviar el pedido.';
+        errorDiv.textContent = 'No pudimos abrir WhatsApp. Intentá nuevamente.';
         errorDiv.classList.remove('hidden');
       }
     } finally {
@@ -1190,23 +1226,15 @@ function initContactFormUI() {
     const mensaje = cleanText(messageInput?.value);
 
     try {
-      const res = await apiFetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, telefono, mensaje })
-      });
+      const whatsappUrl = getWhatsAppUrl(buildContactMessage({ nombre, telefono, mensaje }));
 
-      if (res.success && res.whatsappUrl) {
-        if (successDiv) successDiv.classList.remove('hidden');
-        contactForm.reset();
-        window.open(res.whatsappUrl, '_blank');
-      } else {
-        throw new Error(res.error || 'Error al enviar la consulta.');
-      }
+      if (successDiv) successDiv.classList.remove('hidden');
+      contactForm.reset();
+      window.open(whatsappUrl, '_blank');
     } catch (err) {
       console.error('[RollGo] Contact submit error:', err);
       if (errorDiv) {
-        errorDiv.textContent = err.message || 'Error al enviar la consulta.';
+        errorDiv.textContent = 'No pudimos abrir WhatsApp. Intentá nuevamente.';
         errorDiv.classList.remove('hidden');
       }
     } finally {
@@ -1456,6 +1484,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initScrollReveals();
   initMagneticButtons();
 
+  await loadBusinessConfig();
   loadCartFromStorage();
   initCartSidebarUI();
 

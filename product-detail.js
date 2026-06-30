@@ -6,8 +6,17 @@
 
 'use strict';
 
-const API_BASE  = '';
+const DATA_PATHS = {
+  menu: './data/menu.json',
+  business: './data/business.json'
+};
 const CAT_LABEL = { clasico: 'Clásico', panizado: 'Panizado', veggie: 'Veggie' };
+let businessConfig = {
+  nombre: 'Roll & Go',
+  whatsapp: '1151816111',
+  whatsappFull: '541151816111',
+  direccion: 'Terrada 592'
+};
 
 let currentProduct = null;
 let purchaseQty = 1;
@@ -30,14 +39,40 @@ function initLenis() {
 }
 
 // Fetch helper
-async function apiFetch(endpoint, options = {}) {
-  const url = `${API_BASE}${endpoint}`;
-  const res = await fetch(url, options);
+async function fetchJson(path) {
+  const res = await fetch(path, { cache: 'no-store' });
   if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.error || `API Error ${res.status}: ${endpoint}`);
+    throw new Error(`No se pudo cargar ${path}`);
   }
   return res.json();
+}
+
+async function loadBusinessConfig() {
+  try {
+    businessConfig = { ...businessConfig, ...await fetchJson(DATA_PATHS.business) };
+  } catch (err) {
+    console.warn('[RollGo] Business data fallback:', err);
+  }
+}
+
+function getWhatsAppUrl(message) {
+  return `https://wa.me/${businessConfig.whatsappFull}?text=${encodeURIComponent(message)}`;
+}
+
+function buildOrderMessage({ nombre, telefono, productos, cantidades, notas, direccion }) {
+  const lines = [
+    '🍣 *Nuevo Pedido — Roll & Go*',
+    '',
+    `👤 *Nombre:* ${nombre}`,
+    `📞 *Teléfono:* ${telefono}`,
+    '',
+    '*Productos:*',
+    ...productos.map((producto, index) => `  • ${producto} ×${cantidades[index] || 1} (Tubo de 10 u.)`)
+  ];
+
+  if (notas) lines.push('', `📝 *Notas:* ${notas}`);
+  if (direccion) lines.push(`📍 *Dirección:* ${direccion}`);
+  return lines.join('\n');
 }
 
 function cleanText(value) {
@@ -308,7 +343,7 @@ function renderCartItems(animate = false) {
     li.dataset.id = item.id;
     li.style.setProperty('--item-index', index);
     li.innerHTML = `
-      <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img" onerror="this.src='/images/roll-go-producto.jpg'" />
+      <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img" onerror="this.src='./images/logo-roll-go.png'" />
       <div class="cart-item-info">
         <h4 class="cart-item-name">${item.nombre}</h4>
         <p class="cart-item-desc">${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · Tubo de 10 piezas</p>
@@ -406,33 +441,25 @@ function initCartSidebarUI() {
     const cantidades = cart.map(item => item.qty);
 
     try {
-      const res = await apiFetch('/api/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre,
-          telefono,
-          productos,
-          cantidades,
-          notas: notes,
-          direccion: isDelivery ? address : 'Retiro en el local (Terrada 592)'
-        })
-      });
+      const whatsappUrl = getWhatsAppUrl(buildOrderMessage({
+        nombre,
+        telefono,
+        productos,
+        cantidades,
+        notas: notes,
+        direccion: isDelivery ? address : `Retiro en el local (${businessConfig.direccion})`
+      }));
 
-      if (res.success && res.whatsappUrl) {
-        window.open(res.whatsappUrl, '_blank');
-        cart = [];
-        saveCart();
-        toggleCart(false);
-        cartForm.reset();
-        updateAddressVisibility();
-      } else {
-        throw new Error(res.error || 'Error al procesar el pedido.');
-      }
+      window.open(whatsappUrl, '_blank');
+      cart = [];
+      saveCart();
+      toggleCart(false);
+      cartForm.reset();
+      updateAddressVisibility();
     } catch (err) {
       console.error('[RollGo] Order error:', err);
       if (errorDiv) {
-        errorDiv.textContent = err.message || 'Error al enviar pedido.';
+        errorDiv.textContent = 'No pudimos abrir WhatsApp. Intentá nuevamente.';
         errorDiv.classList.remove('hidden');
       }
     } finally {
@@ -448,8 +475,8 @@ async function loadProductDetail() {
   const error = document.getElementById('detailError');
   const grid = document.getElementById('detailGrid');
 
-  // Extract ID from pathname: /producto/clasico-salmon-palta -> clasico-salmon-palta
-  const productId = window.location.pathname.split('/').pop();
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get('id') || window.location.pathname.split('/').pop();
 
   if (!productId) {
     loading.classList.add('hidden');
@@ -458,12 +485,13 @@ async function loadProductDetail() {
   }
 
   try {
-    const data = await apiFetch(`/api/products/${productId}`);
-    if (!data.success || !data.product) {
+    const products = await fetchJson(DATA_PATHS.menu);
+    const product = Array.isArray(products) ? products.find(item => item.id === productId) : null;
+    if (!product) {
       throw new Error('Producto no encontrado.');
     }
 
-    currentProduct = data.product;
+    currentProduct = product;
 
     // Render Data
     document.title = `${currentProduct.nombre} — Detalles — Roll & Go`;
@@ -649,5 +677,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMobileMenu();
   loadCartFromStorage();
   initCartSidebarUI();
+  await loadBusinessConfig();
   await loadProductDetail();
 });

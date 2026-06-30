@@ -12,7 +12,7 @@ const WA_NUMBER = process.env.WHATSAPP_NUMBER || '541151816111';
 // ── Middleware ──────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // ── Data ────────────────────────────────────────────────────
 const BUSINESS = {
@@ -184,7 +184,7 @@ app.post('/api/order', (req, res) => {
       return `  • ${p} ×${qty} (Tubo de 10 u.)`;
     }),
   ];
-  if (notas?.trim())     lines.push('', `📝 *Notas:* ${notes.trim()}`);
+  if (notas?.trim()) lines.push('', `📝 *Notas:* ${notas.trim()}`);
   if (direccion?.trim()) lines.push(`📍 *Dirección:* ${direccion.trim()}`);
 
   const message = lines.join('\n');
@@ -218,12 +218,12 @@ app.post('/api/contact', (req, res) => {
 
 // GET /producto/:id -> Render details page
 app.get('/producto/:id', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'product.html'));
+  res.sendFile(path.join(__dirname, 'product.html'));
 });
 
 // SPA fallback — serve index.html for any unknown route
 app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ── Start ────────────────────────────────────────────────────
