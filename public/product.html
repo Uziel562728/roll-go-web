@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cargando pieza... — Roll & Go</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="product-detail-page">
+
+<!-- ── NAVBAR ─────────────────────────────────────── -->
+<header class="navbar scrolled" id="navbar" role="banner">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" id="navLogo">
+      <img src="/images/logo-roll-go.png" alt="Roll &amp; Go" class="nav-logo-img" width="120" height="30" />
+    </a>
+
+    <nav class="nav-links" role="navigation" aria-label="Menú principal">
+      <a href="/#menu">Menú</a>
+      <a href="/#como-usar">¿Cómo funciona?</a>
+      <a href="/#contacto">Contacto</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="btn-cart-nav" id="navCartBtn" aria-label="Ver carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+        </svg>
+        <span class="cart-badge-count" id="navCartCount">0</span>
+      </button>
+      <a
+        href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go"
+        target="_blank" rel="noopener noreferrer"
+        class="btn btn-nav" id="navWaBtn"
+      >
+        Pedir ahora
+      </a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+      <span class="ham-line"></span>
+      <span class="ham-line"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Menú móvil" hidden>
+  <button class="mobile-menu-close" id="mobileClose" aria-label="Cerrar menú">✕</button>
+  <nav class="mobile-links" role="navigation">
+    <a href="/#menu"       class="mobile-link">Menú</a>
+    <a href="/#como-usar"  class="mobile-link">¿Cómo funciona?</a>
+    <a href="/#contacto"   class="mobile-link">Contacto</a>
+  </nav>
+  <a
+    href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go"
+    target="_blank" rel="noopener noreferrer"
+    class="btn btn-wa mobile-wa" id="mobileWaBtn"
+  >
+    Pedir por WhatsApp
+  </a>
+</div>
+
+
+<!-- ── DETAIL CONTAINER ────────────────────────────── -->
+<main class="product-detail-main container" id="detailMain">
+  <div class="back-navigation">
+    <a href="/#menu" class="btn-back">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
+        <path d="M10 3L5 8l5 5"/>
+      </svg>
+      Volver al menú
+    </a>
+  </div>
+
+  <!-- Loading Detail View -->
+  <div class="detail-loading" id="detailLoading">
+    <div class="loading-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <p>Cargando detalles de la pieza...</p>
+  </div>
+
+  <!-- Error View -->
+  <div class="detail-error hidden" id="detailError">
+    <p>⚠️ No pudimos cargar los detalles de esta pieza.</p>
+    <a href="/#menu" class="btn btn-ghost">Ver todas las piezas</a>
+  </div>
+
+  <!-- Real Content Grid (Populated dynamically) -->
+  <div class="detail-grid hidden" id="detailGrid">
+    
+    <!-- Left Column (Visuals switcher) -->
+    <div class="detail-visuals">
+      <div class="visual-display-frame" id="visualDisplayFrame">
+        <!-- Image display 1: Piece -->
+        <img src="" alt="" class="visual-img" id="detailImg" />
+        <!-- Image display 2: Tube (hidden initially) -->
+        <img src="" alt="" class="visual-img hidden" id="detailImgSecondary" style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover;" />
+        
+        <!-- Hover navigation arrows -->
+        <button class="photo-nav-arrow arrow-prev" id="arrowPrev" aria-label="Foto anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="photo-nav-arrow arrow-next" id="arrowNext" aria-label="Siguiente foto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column (Metadata) -->
+    <div class="detail-meta">
+      <span class="detail-category-badge" id="detailCategory">Categoría</span>
+      <h1 class="detail-name" id="detailName">Nombre de la pieza</h1>
+      <p class="detail-desc-long" id="detailDescLarga">Descripción detallada...</p>
+      
+      <div class="detail-ingredients-section">
+        <h3>Ingredientes</h3>
+        <ul class="detail-ingredients-tags" id="detailIngredients"></ul>
+      </div>
+
+
+
+      <div class="detail-purchase-box">
+        <div class="purchase-qty-control-wrapper">
+          <div class="purchase-qty-control">
+            <button class="btn-purchase-qty" id="btnQtyMinus" aria-label="Disminuir cantidad">−</button>
+            <span class="purchase-qty-num" id="purchaseQtyNum">1</span>
+            <button class="btn-purchase-qty" id="btnQtyPlus" aria-label="Aumentar cantidad">+</button>
+          </div>
+          <span class="purchase-helper-text">1 unidad = 1 Tubo de 10 piezas</span>
+        </div>
+        <button class="btn btn-primary btn-add-detail" id="btnAddToOrder">
+          <span>Agregar al pedido</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+
+<!-- ── FOOTER ─────────────────────────────────────── -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">ROLL <span class="logo-amp">&amp;</span> GO</span>
+        <p class="footer-tagline">El sushi que va con vos</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a href="https://instagram.com/sushi.roll.go" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="/#menu">Menú</a>
+        <a href="/#como-usar">¿Cómo funciona?</a>
+      </div>
+      <p class="footer-copy">© 2026 Roll &amp; Go · Todos los derechos reservados</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ── FLOATING WA & CART ────────────────────────── -->
+<div class="floats-container">
+  <button class="cart-float" id="cartFloat" aria-label="Ver carrito" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" aria-hidden="true">
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+    </svg>
+    <span class="cart-badge-count" id="cartFloatCount">0</span>
+  </button>
+
+  <a
+    href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go"
+    target="_blank" rel="noopener noreferrer"
+    class="wa-float" id="waFloat" aria-label="Pedir por WhatsApp"
+  >
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<!-- ── CART SIDEBAR ────────────────────────────────── -->
+<div class="cart-sidebar" id="cartSidebar" role="dialog" aria-modal="true" aria-label="Carrito de compras" hidden>
+  <div class="cart-sidebar-backdrop" id="cartBackdrop"></div>
+  <div class="cart-sidebar-content">
+    <header class="cart-header">
+      <h2 class="cart-title">Tu Pedido</h2>
+      <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">✕</button>
+    </header>
+
+    <div class="cart-body" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch>
+      <!-- Empty cart state -->
+      <div class="cart-empty" id="cartEmpty">
+        <span class="cart-empty-icon">🍣</span>
+        <p>Tu carrito está vacío.</p>
+        <p class="cart-empty-sub">¡Agregá algunos rolls del menú para empezar!</p>
+      </div>
+
+      <!-- Items container -->
+      <ul class="cart-items" id="cartItems"></ul>
+
+      <!-- Checkout Form -->
+      <form class="cart-form hidden" id="cartForm">
+        <h3 class="form-title">Datos de Entrega</h3>
+        
+        <div class="form-group">
+          <label for="orderName">Nombre completo *</label>
+          <input type="text" id="orderName" required minlength="3" maxlength="80" autocomplete="name" placeholder="Ej: Román Gómez" />
+        </div>
+
+        <div class="form-group">
+          <label for="orderPhone">WhatsApp *</label>
+          <input type="text" id="orderPhone" required minlength="8" maxlength="15" inputmode="numeric" pattern="[0-9]*" autocomplete="tel" placeholder="Ej: 1151816111" />
+        </div>
+
+        <div class="form-group-row">
+          <label class="form-label">Método de entrega</label>
+          <div class="form-radios">
+            <label class="radio-label">
+              <input type="radio" name="deliveryMethod" value="delivery" checked id="methodDelivery" />
+              <span>Envío a domicilio</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="deliveryMethod" value="pickup" id="methodPickup" />
+              <span>Retiro en local</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" id="addressGroup">
+          <label for="orderAddress">Dirección de entrega *</label>
+          <input type="text" id="orderAddress" minlength="6" maxlength="140" autocomplete="street-address" placeholder="Ej: Av. Rivadavia 1234, 4º B" />
+        </div>
+
+        <div class="form-group">
+          <label for="orderNotes">Notas o aclaraciones</label>
+          <textarea id="orderNotes" rows="2" maxlength="300" placeholder="Ej: Sin Philadelphia, salsa extra, etc."></textarea>
+        </div>
+
+        <div class="cart-error hidden" id="cartFormError"></div>
+
+        <button type="submit" class="btn btn-primary btn-submit-order" id="btnSubmitOrder">
+          <span>Confirmar pedido por WhatsApp</span>
+          <div class="btn-spinner hidden" id="orderSpinner"></div>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── SCRIPTS ─────────────────────────────────────── -->
+<!-- GSAP -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<!-- Lenis smooth scroll -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<!-- Vanilla Tilt -->
+<script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+<!-- Details script -->
+<script src="/product-detail.js"></script>
+
+</body>
+</html>
