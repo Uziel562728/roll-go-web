@@ -35,24 +35,6 @@
       <a href="#contacto">Contacto</a>
     </nav>
 
-    <div class="nav-actions">
-      <button class="btn-cart-nav" id="navCartBtn" aria-label="Ver carrito">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true">
-          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
-        </svg>
-        <span class="cart-badge-count" id="navCartCount">0</span>
-      </button>
-      <a
-        href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go"
-        target="_blank" rel="noopener noreferrer"
-        class="btn btn-nav" id="navWaBtn"
-        aria-label="Pedir por WhatsApp"
-      >
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="15" height="15"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Pedir ahora
-      </a>
-    </div>
-
     <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
       <span class="ham-line"></span>
       <span class="ham-line"></span>
@@ -62,36 +44,46 @@
 
 <!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Menú móvil" hidden>
-  <button class="mobile-menu-close" id="mobileClose" aria-label="Cerrar menú">✕</button>
-  <nav class="mobile-links" role="navigation">
-    <a href="#menu"       class="mobile-link">Menú</a>
-    <a href="#como-usar"  class="mobile-link">¿Cómo funciona?</a>
-    <a href="#contacto"   class="mobile-link">Contacto</a>
-  </nav>
-  <a
-    href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go"
-    target="_blank" rel="noopener noreferrer"
-    class="btn btn-wa mobile-wa" id="mobileWaBtn"
-  >
-    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Pedir por WhatsApp
-  </a>
+  <div class="mobile-menu-backdrop" id="mobileMenuBackdrop"></div>
+  <div class="mobile-menu-content">
+    <button class="mobile-menu-close" id="mobileClose" aria-label="Cerrar menú">✕</button>
+    <nav class="mobile-links" role="navigation">
+      <a href="#menu"       class="mobile-link">Menú</a>
+      <a href="#como-usar"  class="mobile-link">¿Cómo funciona?</a>
+      <a href="#contacto"   class="mobile-link">Contacto</a>
+      <a href="#"           class="mobile-link hidden" id="mobileMenuCartLink">Mi Pedido</a>
+    </nav>
+    <div class="mobile-menu-footer">
+      <a href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go" target="_blank" rel="noopener noreferrer" class="mobile-footer-btn btn-wa-light">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span>WhatsApp</span>
+      </a>
+      <a href="https://instagram.com/sushi.roll.go" target="_blank" rel="noopener noreferrer" class="mobile-footer-btn btn-ig-light">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        <span>Instagram</span>
+      </a>
+      <a href="https://maps.google.com/?q=Terrada+592,+Buenos+Aires" target="_blank" rel="noopener noreferrer" class="mobile-footer-btn btn-maps-light">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Terrada 592</span>
+      </a>
+    </div>
+  </div>
 </div>
 
 
-<section class="hero" id="hero" aria-labelledby="heroTitle">
+<section class="hero" id="hero" aria-labelledby="heroLogoImg">
   <div class="hero-inner">
 
-    <div class="hero-logo-wrapper" id="heroLogoWrapper">
+    <h1 class="hero-logo-wrapper" id="heroLogoWrapper">
       <img
         src="./images/logo-roll-go.png"
-        alt="Roll &amp; Go"
+        alt="Roll &amp; Go — El sushi que va con vos"
         class="hero-logo-img"
         id="heroLogoImg"
         width="420"
         height="140"
       />
-    </div>
+    </h1>
 
     <!-- Grilla de contenido -->
     <div class="hero-content-grid" id="heroContentGrid">
@@ -112,11 +104,6 @@
           <div class="hero-stat">
             <strong>10 u.</strong>
             <span>Por Tubo</span>
-          </div>
-          <div class="hero-stat-divider" aria-hidden="true"></div>
-          <div class="hero-stat">
-            <strong>Kosher</strong>
-            <span>Certificado</span>
           </div>
           <div class="hero-stat-divider" aria-hidden="true"></div>
           <div class="hero-stat">
@@ -141,24 +128,6 @@
         </div>
       </div>
 
-      <!-- Visual column -->
-      <div class="hero-visual" id="heroVisual" aria-hidden="true">
-        <div class="hero-img-frame">
-          <img
-            src="./images/tubos%20fotos/clasico%20salmon%20palta%20tubo%20.png"
-            alt="Roll &amp; Go — sushi on-the-go con salsa de soja incluida en el tubo"
-            class="hero-img" id="heroImg"
-            width="640" height="640"
-            loading="eager"
-            fetchpriority="high"
-          />
-          <div class="hero-img-badge">
-            <span class="badge-dot" aria-hidden="true"></span>
-            <span>Con salsa de soja incluida</span>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -167,6 +136,40 @@
     <div class="scroll-line"></div>
   </div>
 </section>
+
+<!-- ── MARQUEE STRIPE ────────────────────────────────────── -->
+<div class="marquee-stripe" aria-label="Información de la marca">
+  <div class="marquee-content">
+    <div class="marquee-track">
+      <span>Salsa de soja incluida</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>100% Kosher</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>Hecho al momento</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>Salsa de soja incluida</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>100% Kosher</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>Hecho al momento</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+    </div>
+    <div class="marquee-track marquee-duplicate" aria-hidden="true">
+      <span>Salsa de soja incluida</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>100% Kosher</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>Hecho al momento</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>Salsa de soja incluida</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>100% Kosher</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+      <span>Hecho al momento</span>
+      <span class="marquee-dot" aria-hidden="true">●</span>
+    </div>
+  </div>
+</div>
 
 
 <!-- ── MENÚ ──────────────────────────────────────── -->
@@ -307,10 +310,14 @@
         </p>
 
         <div class="cta-buttons">
-          <button class="btn btn-wa-large btn-magnetic" id="ctaWaBtn">
+          <a
+            href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go"
+            target="_blank" rel="noopener noreferrer"
+            class="btn btn-wa-large btn-magnetic" id="ctaWaBtn"
+          >
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Armar Pedido
-          </button>
+            WhatsApp
+          </a>
           <a
             href="https://instagram.com/sushi.roll.go"
             target="_blank" rel="noopener noreferrer"
@@ -422,61 +429,100 @@
     </header>
 
     <div class="cart-body" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch>
-      <!-- Empty cart state -->
-      <div class="cart-empty" id="cartEmpty">
-        <span class="cart-empty-icon">🍣</span>
-        <p>Tu carrito está vacío.</p>
-        <p class="cart-empty-sub">¡Agregá algunos rolls del menú para empezar!</p>
-      </div>
-
-      <!-- Items container -->
-      <ul class="cart-items" id="cartItems"></ul>
-
-      <!-- Checkout Form -->
-      <form class="cart-form hidden" id="cartForm">
-        <h3 class="form-title">Datos de Entrega</h3>
-        
-        <div class="form-group">
-          <label for="orderName">Nombre completo *</label>
-          <input type="text" id="orderName" required minlength="3" maxlength="80" autocomplete="name" placeholder="Ej: Román Gómez" />
+      
+      <!-- PASO 1: Revisar Pedido -->
+      <div class="cart-step" id="cartStep1">
+        <!-- Empty cart state -->
+        <div class="cart-empty" id="cartEmpty">
+          <span class="cart-empty-icon">🍣</span>
+          <p>Tu carrito está vacío.</p>
+          <p class="cart-empty-sub">¡Agregá algunos rolls del menú para empezar!</p>
+          <button type="button" class="btn btn-primary btn-empty-return" id="btnEmptyReturn">
+            Volver al menú
+          </button>
         </div>
 
-        <div class="form-group">
-          <label for="orderPhone">WhatsApp *</label>
-          <input type="text" id="orderPhone" required minlength="8" maxlength="15" inputmode="numeric" pattern="[0-9]*" autocomplete="tel" placeholder="Ej: 1151816111" />
-        </div>
+        <!-- Items container -->
+        <ul class="cart-items" id="cartItems"></ul>
 
-        <div class="form-group-row">
-          <label class="form-label">Método de entrega</label>
-          <div class="form-radios">
-            <label class="radio-label">
-              <input type="radio" name="deliveryMethod" value="delivery" checked id="methodDelivery" />
-              <span>Envío a domicilio</span>
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="deliveryMethod" value="pickup" id="methodPickup" />
-              <span>Retiro en local</span>
-            </label>
+        <!-- Summary box -->
+        <div class="cart-summary-box hidden" id="cartSummaryBox">
+          <div class="summary-row">
+            <span>Total de tubos:</span>
+            <strong id="summaryTubes">0 u.</strong>
+          </div>
+          <div class="summary-row">
+            <span>Total de piezas:</span>
+            <strong id="summaryPieces">0 piezas</strong>
+          </div>
+          <div class="summary-note">
+            Cada tubo contiene 10 piezas de la variedad elegida.
           </div>
         </div>
 
-        <div class="form-group" id="addressGroup">
-          <label for="orderAddress">Dirección de entrega *</label>
-          <input type="text" id="orderAddress" minlength="6" maxlength="140" autocomplete="street-address" placeholder="Ej: Av. Rivadavia 1234, 4º B" />
-        </div>
-
-        <div class="form-group">
-          <label for="orderNotes">Notas o aclaraciones</label>
-          <textarea id="orderNotes" rows="2" maxlength="300" placeholder="Ej: Sin Philadelphia, salsa extra, etc."></textarea>
-        </div>
-
-        <div class="cart-error hidden" id="cartFormError"></div>
-
-        <button type="submit" class="btn btn-primary btn-submit-order" id="btnSubmitOrder">
-          <span>Confirmar pedido por WhatsApp</span>
-          <div class="btn-spinner hidden" id="orderSpinner"></div>
+        <button type="button" class="btn btn-primary btn-next-step hidden" id="btnNextStep">
+          <span>Continuar con el envío</span>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
         </button>
-      </form>
+      </div>
+
+      <!-- PASO 2: Datos de Entrega -->
+      <div class="cart-step hidden" id="cartStep2">
+        <button type="button" class="btn-back-to-cart" id="btnBackToCart">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true">
+            <path d="M13 8H3M7 12L3 8l4-4"/>
+          </svg>
+          Volver a mi pedido
+        </button>
+
+        <form class="cart-form" id="cartForm">
+          <h3 class="form-title">Datos de Entrega</h3>
+          
+          <div class="form-group">
+            <label for="orderName">Nombre completo *</label>
+            <input type="text" id="orderName" required minlength="3" maxlength="80" autocomplete="name" placeholder="Ej: Román Gómez" />
+          </div>
+
+          <div class="form-group">
+            <label for="orderPhone">WhatsApp *</label>
+            <input type="text" id="orderPhone" required minlength="8" maxlength="15" inputmode="numeric" pattern="[0-9]*" autocomplete="tel" placeholder="Ej: 1151816111" />
+          </div>
+
+          <div class="form-group-row">
+            <label class="form-label">Método de entrega</label>
+            <div class="form-radios">
+              <label class="radio-label">
+                <input type="radio" name="deliveryMethod" value="delivery" checked id="methodDelivery" />
+                <span>Envío a domicilio</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="deliveryMethod" value="pickup" id="methodPickup" />
+                <span>Retiro en local</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" id="addressGroup">
+            <label for="orderAddress">Dirección de entrega *</label>
+            <input type="text" id="orderAddress" minlength="6" maxlength="140" autocomplete="street-address" placeholder="Ej: Av. Rivadavia 1234, 4º B" />
+          </div>
+
+          <div class="form-group">
+            <label for="orderNotes">Notas o aclaraciones</label>
+            <textarea id="orderNotes" rows="2" maxlength="300" placeholder="Ej: Sin Philadelphia, salsa extra, etc."></textarea>
+          </div>
+
+          <div class="cart-error hidden" id="cartFormError"></div>
+
+          <button type="submit" class="btn btn-primary btn-submit-order" id="btnSubmitOrder">
+            <span>Confirmar pedido por WhatsApp</span>
+            <div class="btn-spinner hidden" id="orderSpinner"></div>
+          </button>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>

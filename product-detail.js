@@ -181,6 +181,18 @@ function saveCart() {
   renderCartItems();
 }
 
+function setVisualStep(stepNum) {
+  const step1 = document.getElementById('cartStep1');
+  const step2 = document.getElementById('cartStep2');
+  if (stepNum === 1) {
+    step1?.classList.remove('hidden');
+    step2?.classList.add('hidden');
+  } else if (stepNum === 2) {
+    step1?.classList.add('hidden');
+    step2?.classList.remove('hidden');
+  }
+}
+
 function getCartTotalQty() {
   return cart.reduce((sum, item) => sum + item.qty, 0);
 }
@@ -192,6 +204,11 @@ function updateCartSummary() {
   if (title) {
     title.dataset.count = totalQty > 0 ? `${totalQty}` : '';
   }
+
+  const summaryTubes = document.getElementById('summaryTubes');
+  const summaryPieces = document.getElementById('summaryPieces');
+  if (summaryTubes) summaryTubes.textContent = `${totalQty} u.`;
+  if (summaryPieces) summaryPieces.textContent = `${totalQty * 10} piezas`;
 }
 
 function updateCartBadges() {
@@ -200,10 +217,31 @@ function updateCartBadges() {
   const navCartCount = document.getElementById('navCartCount');
   const cartFloatCount = document.getElementById('cartFloatCount');
   const cartFloat = document.getElementById('cartFloat');
+  const navCartBtn = document.getElementById('navCartBtn');
+  const mobileMenuCartLink = document.getElementById('mobileMenuCartLink');
 
   if (navCartCount) navCartCount.textContent = totalQty;
   if (cartFloatCount) cartFloatCount.textContent = totalQty;
   updateCartSummary();
+
+  // Show/Hide header cart button based on content
+  if (navCartBtn) {
+    if (totalQty > 0) {
+      navCartBtn.classList.remove('hidden');
+    } else {
+      navCartBtn.classList.add('hidden');
+    }
+  }
+
+  // Show/Hide mobile menu cart link based on content
+  if (mobileMenuCartLink) {
+    if (totalQty > 0) {
+      mobileMenuCartLink.classList.remove('hidden');
+      mobileMenuCartLink.innerHTML = `Mi Pedido <span style="font-size: 0.85em; opacity: 0.85; margin-left: 0.35em;">(${totalQty})</span>`;
+    } else {
+      mobileMenuCartLink.classList.add('hidden');
+    }
+  }
 
   if (cartFloat) {
     if (totalQty > 0) {
@@ -220,6 +258,57 @@ function updateCartBadges() {
   }
 }
 
+// Mobile History Back Button Handler
+let modalHistoryPushed = false;
+
+function pushModalState() {
+  if (!modalHistoryPushed) {
+    history.pushState({ modalOpen: true }, '');
+    modalHistoryPushed = true;
+  }
+}
+
+function popModalStateIfNeeded() {
+  if (modalHistoryPushed) {
+    modalHistoryPushed = false;
+    if (history.state && history.state.modalOpen) {
+      history.back();
+    }
+  }
+}
+
+window.addEventListener('popstate', (e) => {
+  modalHistoryPushed = false;
+
+  // Close mobile menu if open
+  const mobileMenu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  if (mobileMenu && mobileMenu.classList.contains('is-open')) {
+    mobileMenu.classList.remove('is-open');
+    hamburger?.classList.remove('open');
+    hamburger?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (typeof lenis !== 'undefined' && lenis) lenis.start();
+    setTimeout(() => {
+      if (!mobileMenu.classList.contains('is-open')) {
+        mobileMenu.setAttribute('hidden', '');
+      }
+    }, 400);
+  }
+
+  // Close cart sidebar if open
+  const cartSidebar = document.getElementById('cartSidebar');
+  if (cartSidebar && cartSidebar.classList.contains('is-open')) {
+    cartSidebar.classList.remove('is-open');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!cartSidebar.classList.contains('is-open')) {
+        cartSidebar.setAttribute('hidden', '');
+      }
+    }, 360);
+  }
+});
+
 function toggleCart(openState) {
   const sidebar = document.getElementById('cartSidebar');
   if (!sidebar) return;
@@ -230,7 +319,9 @@ function toggleCart(openState) {
     sidebar.removeAttribute('hidden');
     requestAnimationFrame(() => sidebar.classList.add('is-open'));
     document.body.style.overflow = 'hidden';
+    setVisualStep(1); // Always reset to Step 1 on open
     renderCartItems(true);
+    pushModalState();
   } else {
     sidebar.classList.remove('is-open');
     document.body.style.overflow = '';
@@ -239,6 +330,7 @@ function toggleCart(openState) {
         sidebar.setAttribute('hidden', '');
       }
     }, 360);
+    popModalStateIfNeeded();
   }
 }
 
@@ -319,7 +411,8 @@ function updateCartQty(productId, delta) {
 function renderCartItems(animate = false) {
   const container = document.getElementById('cartItems');
   const cartEmpty = document.getElementById('cartEmpty');
-  const cartForm = document.getElementById('cartForm');
+  const cartSummaryBox = document.getElementById('cartSummaryBox');
+  const btnNextStep = document.getElementById('btnNextStep');
 
   if (!container) return;
 
@@ -327,13 +420,16 @@ function renderCartItems(animate = false) {
 
   if (cart.length === 0) {
     cartEmpty?.classList.remove('hidden');
-    cartForm?.classList.add('hidden');
+    cartSummaryBox?.classList.add('hidden');
+    btnNextStep?.classList.add('hidden');
+    setVisualStep(1); // Auto-back to step 1
     updateCartSummary();
     return;
   }
 
   cartEmpty?.classList.add('hidden');
-  cartForm?.classList.remove('hidden');
+  cartSummaryBox?.classList.remove('hidden');
+  btnNextStep?.classList.remove('hidden');
   updateCartSummary();
 
   cart.forEach((item, index) => {
@@ -375,6 +471,17 @@ function initCartSidebarUI() {
   cartClose?.addEventListener('click', () => toggleCart(false));
   cartBackdrop?.addEventListener('click', () => toggleCart(false));
   cartBody?.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
+
+  const btnEmptyReturn = document.getElementById('btnEmptyReturn');
+  btnEmptyReturn?.addEventListener('click', () => {
+    toggleCart(false);
+    window.location.href = './#menu';
+  });
+
+  const btnNextStep = document.getElementById('btnNextStep');
+  const btnBackToCart = document.getElementById('btnBackToCart');
+  btnNextStep?.addEventListener('click', () => setVisualStep(2));
+  btnBackToCart?.addEventListener('click', () => setVisualStep(1));
 
   const methodDelivery = document.getElementById('methodDelivery');
   const methodPickup = document.getElementById('methodPickup');
@@ -611,7 +718,10 @@ async function loadProductDetail() {
     document.getElementById('btnAddToOrder')?.addEventListener('click', () => {
       if (currentProduct) {
         addToCart(currentProduct, purchaseQty);
-        toggleCart(true); // Open sidebar to checkout
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        if (!isMobile) {
+          toggleCart(true); // Open sidebar to checkout on desktop only
+        }
       }
     });
 
@@ -646,18 +756,50 @@ function initMobileMenu() {
   const hamburger  = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   const closeBtn   = document.getElementById('mobileClose');
+  const backdrop   = document.getElementById('mobileMenuBackdrop');
   if (!hamburger || !mobileMenu) return;
 
-  hamburger.addEventListener('click', () => {
+  let closeTimer;
+
+  const open  = () => {
+    clearTimeout(closeTimer);
     mobileMenu.removeAttribute('hidden');
-  });
-
-  const close = () => {
-    mobileMenu.setAttribute('hidden', '');
+    requestAnimationFrame(() => mobileMenu.classList.add('is-open'));
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    if (typeof lenis !== 'undefined' && lenis) lenis.stop();
+    pushModalState();
   };
+  const close = () => {
+    mobileMenu.classList.remove('is-open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (typeof lenis !== 'undefined' && lenis) lenis.start();
+    closeTimer = window.setTimeout(() => {
+      if (!mobileMenu.classList.contains('is-open')) {
+        mobileMenu.setAttribute('hidden', '');
+      }
+    }, 400);
+    popModalStateIfNeeded();
+  };
+  const toggle = () => mobileMenu.hasAttribute('hidden') || !mobileMenu.classList.contains('is-open') ? open() : close();
 
-  closeBtn?.addEventListener('click', close);
+  hamburger.addEventListener('click', toggle);
+  if (closeBtn) closeBtn.addEventListener('click', close);
+  backdrop?.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
   document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', close));
+
+  const cartLink = document.getElementById('mobileMenuCartLink');
+  cartLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    close();
+    setTimeout(() => {
+      toggleCart(true);
+    }, 150);
+  });
 }
 
 // Active navbar scroll style

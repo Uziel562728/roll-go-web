@@ -90,28 +90,50 @@ function initMobileMenu() {
   const hamburger  = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   const closeBtn   = document.getElementById('mobileClose');
+  const backdrop   = document.getElementById('mobileMenuBackdrop');
   if (!hamburger || !mobileMenu) return;
 
+  let closeTimer;
+
   const open  = () => {
+    clearTimeout(closeTimer);
     mobileMenu.removeAttribute('hidden');
+    requestAnimationFrame(() => mobileMenu.classList.add('is-open'));
     hamburger.classList.add('open');
     hamburger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
-    if (lenis) lenis.stop();
+    if (typeof lenis !== 'undefined' && lenis) lenis.stop();
+    pushModalState();
   };
   const close = () => {
-    mobileMenu.setAttribute('hidden', '');
+    mobileMenu.classList.remove('is-open');
     hamburger.classList.remove('open');
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    if (lenis) lenis.start();
+    if (typeof lenis !== 'undefined' && lenis) lenis.start();
+    closeTimer = window.setTimeout(() => {
+      if (!mobileMenu.classList.contains('is-open')) {
+        mobileMenu.setAttribute('hidden', '');
+      }
+    }, 400);
+    popModalStateIfNeeded();
   };
-  const toggle = () => mobileMenu.hasAttribute('hidden') ? open() : close();
+  const toggle = () => mobileMenu.hasAttribute('hidden') || !mobileMenu.classList.contains('is-open') ? open() : close();
 
   hamburger.addEventListener('click', toggle);
   if (closeBtn) closeBtn.addEventListener('click', close);
+  backdrop?.addEventListener('click', close);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
   document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', close));
+
+  const cartLink = document.getElementById('mobileMenuCartLink');
+  cartLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    close();
+    setTimeout(() => {
+      toggleCart(true);
+    }, 150);
+  });
 }
 
 
@@ -121,7 +143,7 @@ function initMobileMenu() {
 function initHero() {
   if (typeof gsap === 'undefined') {
     // CSS fallback — just show everything
-    document.querySelectorAll('#heroEyebrow,#heroLogoWrapper,#heroLogoImg,#heroSub,#heroStats,#heroCta,#heroVisual')
+    document.querySelectorAll('#heroEyebrow,#heroLogoWrapper,#heroLogoImg,#heroSub,#heroStats,#heroCta')
       .forEach(el => { 
         el.style.opacity = '1'; 
         el.style.transform = 'none'; 
@@ -138,15 +160,13 @@ function initHero() {
   gsap.set('#heroSub',     { y: 20, opacity: 0 });
   gsap.set('#heroStats',   { y: 20, opacity: 0 });
   gsap.set('#heroCta',     { y: 20, opacity: 0 });
-  gsap.set('#heroVisual',  { scale: 0.98, opacity: 0, filter: "blur(10px)" });
 
   // Timeline Sequence
   tl.to('#heroLogoImg', { scale: 1, opacity: 1, filter: "blur(0px)", duration: 1.4, ease: "power4.out" })
-    .to('#heroVisual', { scale: 1, opacity: 1, filter: "blur(0px)", duration: 1.6, ease: "power3.out" }, '-=1.0')
-    .to('#heroEyebrow', { y: 0, opacity: 1, duration: 0.6 }, '-=1.2')
-    .to('#heroSub',     { y: 0, opacity: 1, duration: 0.6 }, '-=1.0')
-    .to('#heroStats',   { y: 0, opacity: 1, duration: 0.6 }, '-=0.8')
-    .to('#heroCta',     { y: 0, opacity: 1, duration: 0.6 }, '-=0.6');
+    .to('#heroEyebrow', { y: 0, opacity: 1, duration: 0.6 }, '-=1.0')
+    .to('#heroSub',     { y: 0, opacity: 1, duration: 0.6 }, '-=0.4')
+    .to('#heroStats',   { y: 0, opacity: 1, duration: 0.6 }, '-=0.4')
+    .to('#heroCta',     { y: 0, opacity: 1, duration: 0.6 }, '-=0.4');
 }
 
 
@@ -203,20 +223,7 @@ function initScrollReveals() {
     });
   });
 
-  // Parallax on hero product image
-  const heroImg = document.getElementById('heroImg');
-  if (heroImg) {
-    gsap.to(heroImg, {
-      yPercent: 12,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-      },
-    });
-  }
+
 }
 
 
@@ -285,19 +292,9 @@ function initTilt(cards) {
       });
     }
 
-    // Mobile: subtle float animation
+    // Mobile: Touch feedback only (removed floating animation)
     if (!supportsHover) {
       cards.forEach((card, i) => {
-        if (typeof gsap !== 'undefined') {
-          gsap.to(card, {
-            y: -5,
-            duration: 1.8 + (i * 0.15),
-            ease: 'sine.inOut',
-            repeat: -1,
-            yoyo: true,
-            delay: i * 0.2,
-          });
-        }
         // Touch press feedback
         card.addEventListener('pointerdown', () => {
           card.style.transition = 'transform 0.12s ease';
@@ -581,6 +578,18 @@ function saveCart() {
   renderCartItems();
 }
 
+function setVisualStep(stepNum) {
+  const step1 = document.getElementById('cartStep1');
+  const step2 = document.getElementById('cartStep2');
+  if (stepNum === 1) {
+    step1?.classList.remove('hidden');
+    step2?.classList.add('hidden');
+  } else if (stepNum === 2) {
+    step1?.classList.add('hidden');
+    step2?.classList.remove('hidden');
+  }
+}
+
 function getCartTotalQty() {
   return cart.reduce((sum, item) => sum + item.qty, 0);
 }
@@ -592,6 +601,11 @@ function updateCartSummary() {
   if (title) {
     title.dataset.count = totalQty > 0 ? `${totalQty}` : '';
   }
+
+  const summaryTubes = document.getElementById('summaryTubes');
+  const summaryPieces = document.getElementById('summaryPieces');
+  if (summaryTubes) summaryTubes.textContent = `${totalQty} u.`;
+  if (summaryPieces) summaryPieces.textContent = `${totalQty * 10} piezas`;
 }
 
 // Update cart counter badges & floating button visibility
@@ -601,10 +615,31 @@ function updateCartBadges() {
   const navCartCount = document.getElementById('navCartCount');
   const cartFloatCount = document.getElementById('cartFloatCount');
   const cartFloat = document.getElementById('cartFloat');
+  const navCartBtn = document.getElementById('navCartBtn');
+  const mobileMenuCartLink = document.getElementById('mobileMenuCartLink');
 
   if (navCartCount) navCartCount.textContent = totalQty;
   if (cartFloatCount) cartFloatCount.textContent = totalQty;
   updateCartSummary();
+
+  // Show/Hide header cart button based on content
+  if (navCartBtn) {
+    if (totalQty > 0) {
+      navCartBtn.classList.remove('hidden');
+    } else {
+      navCartBtn.classList.add('hidden');
+    }
+  }
+
+  // Show/Hide mobile menu cart link based on content
+  if (mobileMenuCartLink) {
+    if (totalQty > 0) {
+      mobileMenuCartLink.classList.remove('hidden');
+      mobileMenuCartLink.innerHTML = `Mi Pedido <span style="font-size: 0.85em; opacity: 0.85; margin-left: 0.35em;">(${totalQty})</span>`;
+    } else {
+      mobileMenuCartLink.classList.add('hidden');
+    }
+  }
 
   // Show/Hide floating cart button based on content
   if (cartFloat) {
@@ -622,6 +657,57 @@ function updateCartBadges() {
   }
 }
 
+// Mobile History Back Button Handler
+let modalHistoryPushed = false;
+
+function pushModalState() {
+  if (!modalHistoryPushed) {
+    history.pushState({ modalOpen: true }, '');
+    modalHistoryPushed = true;
+  }
+}
+
+function popModalStateIfNeeded() {
+  if (modalHistoryPushed) {
+    modalHistoryPushed = false;
+    if (history.state && history.state.modalOpen) {
+      history.back();
+    }
+  }
+}
+
+window.addEventListener('popstate', (e) => {
+  modalHistoryPushed = false;
+
+  // Close mobile menu if open
+  const mobileMenu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  if (mobileMenu && mobileMenu.classList.contains('is-open')) {
+    mobileMenu.classList.remove('is-open');
+    hamburger?.classList.remove('open');
+    hamburger?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (typeof lenis !== 'undefined' && lenis) lenis.start();
+    setTimeout(() => {
+      if (!mobileMenu.classList.contains('is-open')) {
+        mobileMenu.setAttribute('hidden', '');
+      }
+    }, 400);
+  }
+
+  // Close cart sidebar if open
+  const cartSidebar = document.getElementById('cartSidebar');
+  if (cartSidebar && cartSidebar.classList.contains('is-open')) {
+    cartSidebar.classList.remove('is-open');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!cartSidebar.classList.contains('is-open')) {
+        cartSidebar.setAttribute('hidden', '');
+      }
+    }, 360);
+  }
+});
+
 // Toggle Cart Sidebar Modal
 function toggleCart(openState) {
   const sidebar = document.getElementById('cartSidebar');
@@ -633,7 +719,9 @@ function toggleCart(openState) {
     sidebar.removeAttribute('hidden');
     requestAnimationFrame(() => sidebar.classList.add('is-open'));
     document.body.style.overflow = 'hidden';
+    setVisualStep(1); // Always reset to Step 1 on open
     renderCartItems(true);
+    pushModalState();
   } else {
     sidebar.classList.remove('is-open');
     document.body.style.overflow = '';
@@ -642,36 +730,21 @@ function toggleCart(openState) {
         sidebar.setAttribute('hidden', '');
       }
     }, 360);
+    popModalStateIfNeeded();
   }
 }
 
 // Sync card menu quantities with cart state
 function syncCardQtyControls() {
-  document.querySelectorAll('.menu-card').forEach(card => {
-    const productId = card.querySelector('.card-add-container')?.dataset.productId;
-    if (!productId) return;
-
-    const cartItem = cart.find(item => item.id === productId);
-    const addBtn = card.querySelector('.btn-qty-add-trigger');
-    const qtyControl = card.querySelector('.card-qty-control');
-    const qtyNum = card.querySelector('.card-qty-num');
-
-    if (cartItem) {
-      if (addBtn) addBtn.classList.add('hidden');
-      if (qtyControl) qtyControl.classList.remove('hidden');
-      if (qtyNum) qtyNum.textContent = cartItem.qty;
-    } else {
-      if (addBtn) addBtn.classList.remove('hidden');
-      if (qtyControl) qtyControl.classList.add('hidden');
-    }
-  });
+  // Qty controls are no longer shown on the home page grid
 }
 
 // Render shopping cart list items
 function renderCartItems(animate = false) {
   const container = document.getElementById('cartItems');
   const cartEmpty = document.getElementById('cartEmpty');
-  const cartForm = document.getElementById('cartForm');
+  const cartSummaryBox = document.getElementById('cartSummaryBox');
+  const btnNextStep = document.getElementById('btnNextStep');
 
   if (!container) return;
 
@@ -679,13 +752,16 @@ function renderCartItems(animate = false) {
 
   if (cart.length === 0) {
     cartEmpty?.classList.remove('hidden');
-    cartForm?.classList.add('hidden');
+    cartSummaryBox?.classList.add('hidden');
+    btnNextStep?.classList.add('hidden');
+    setVisualStep(1); // Auto-back to step 1
     updateCartSummary();
     return;
   }
 
   cartEmpty?.classList.add('hidden');
-  cartForm?.classList.remove('hidden');
+  cartSummaryBox?.classList.remove('hidden');
+  btnNextStep?.classList.remove('hidden');
   updateCartSummary();
 
   cart.forEach((item, index) => {
@@ -915,38 +991,12 @@ function buildCard(product) {
       <p class="card-desc">${product.descripcion}</p>
       <span class="card-presentation">📦 Presentación: Tubo de 10 piezas</span>
       <div class="card-tags">${tagsHtml}</div>
-      
-      <div class="card-add-container" data-product-id="${product.id}">
-        <button class="btn-card-add btn-qty-add-trigger">Agregar al pedido</button>
-        <div class="card-qty-control hidden">
-          <button class="btn-card-qty btn-card-qty-minus" aria-label="Quitar uno">-</button>
-          <span class="card-qty-num">1</span>
-          <button class="btn-card-qty btn-card-qty-plus" aria-label="Agregar uno">+</button>
-        </div>
-      </div>
     </div>
   `;
 
-  // Card-wide click listener to open details page (skipping cart interactions)
-  article.addEventListener('click', (e) => {
-    if (e.target.closest('.card-add-container') || e.target.closest('.btn-qty-add-trigger') || e.target.closest('.card-qty-control')) {
-      return;
-    }
+  // Card click listener to open details page
+  article.addEventListener('click', () => {
     window.location.href = `./product.html?id=${encodeURIComponent(product.id)}`;
-  });
-
-  article.querySelector('.btn-qty-add-trigger').addEventListener('click', (e) => {
-    e.stopPropagation();
-    addToCart(product, article, e.currentTarget);
-  });
-  
-  article.querySelector('.btn-card-qty-minus').addEventListener('click', (e) => {
-    e.stopPropagation();
-    updateCartQty(product.id, -1);
-  });
-  article.querySelector('.btn-card-qty-plus').addEventListener('click', (e) => {
-    e.stopPropagation();
-    updateCartQty(product.id, 1);
   });
 
   return article;
@@ -1094,8 +1144,24 @@ function initCartSidebarUI() {
   cartBackdrop?.addEventListener('click', () => toggleCart(false));
   cartBody?.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
 
-  const ctaWaBtn = document.getElementById('ctaWaBtn');
-  ctaWaBtn?.addEventListener('click', () => toggleCart(true));
+  const btnEmptyReturn = document.getElementById('btnEmptyReturn');
+  btnEmptyReturn?.addEventListener('click', () => {
+    toggleCart(false);
+    const menuSec = document.getElementById('menu');
+    if (menuSec) {
+      if (typeof lenis !== 'undefined' && lenis) {
+        lenis.scrollTo(menuSec);
+      } else {
+        menuSec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
+
+
+  const btnNextStep = document.getElementById('btnNextStep');
+  const btnBackToCart = document.getElementById('btnBackToCart');
+  btnNextStep?.addEventListener('click', () => setVisualStep(2));
+  btnBackToCart?.addEventListener('click', () => setVisualStep(1));
 
   const methodDelivery = document.getElementById('methodDelivery');
   const methodPickup = document.getElementById('methodPickup');
@@ -1352,7 +1418,7 @@ function initInteractiveSteps() {
       ease: 'power2.inOut'
     }, 'serve')
     .to(soy, {
-      x: 6,
+      x: 48,
       y: -338,
       rotateZ: -74,
       z: 44,
@@ -1376,7 +1442,7 @@ function initInteractiveSteps() {
       filter: 'drop-shadow(0 8px 14px rgba(45, 29, 13, 0.08))'
     }, 'insert+=0.35')
     .to(soy, {
-      x: -36,
+      x: -6,
       y: 14,
       scale: 0.96,
       duration: 1.45,
