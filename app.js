@@ -364,16 +364,21 @@ function filterCards(filter) {
   let visibleIndex = 0;
 
   cards.forEach(card => {
+    // Kill existing animations on the card to avoid collisions/stuttering
+    if (typeof gsap !== 'undefined') {
+      gsap.killTweensOf(card);
+    }
+
     const match = filter === 'all' || card.dataset.category === filter;
 
     if (match) {
       card.style.display = '';
-      const delay = visibleIndex * 0.06;
+      const delay = visibleIndex * 0.05;
 
       if (typeof gsap !== 'undefined') {
         gsap.fromTo(card,
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.45, delay, ease: 'power2.out',
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.35, delay, ease: 'power2.out',
             onComplete: () => card.classList.add('is-visible') }
         );
       } else {
@@ -383,8 +388,11 @@ function filterCards(filter) {
     } else {
       if (typeof gsap !== 'undefined') {
         gsap.to(card, {
-          opacity: 0, y: 10, duration: 0.25, ease: 'power2.in',
-          onComplete: () => { card.style.display = 'none'; card.classList.remove('is-visible'); }
+          opacity: 0, y: 10, duration: 0.2, ease: 'power2.in',
+          onComplete: () => { 
+            card.style.display = 'none'; 
+            card.classList.remove('is-visible'); 
+          }
         });
       } else {
         card.style.display = 'none';
@@ -951,10 +959,8 @@ function buildCard(product) {
   article.className = 'menu-card';
   article.dataset.category = product.categoria;
 
-  const badgeClass = product.destacado ? 'card-badge featured' : 'card-badge';
-  const badgeLabel = product.destacado
-    ? '⭐ Favorito'
-    : CAT_LABEL[product.categoria] || product.categoria;
+  const badgeClass = 'card-badge';
+  const badgeLabel = CAT_LABEL[product.categoria] || product.categoria;
 
   const tagsHtml = (product.tags || []).map(tag => {
     const isVeggie = product.categoria === 'veggie';
@@ -989,7 +995,7 @@ function buildCard(product) {
     <div class="card-body">
       <h3 class="card-name"><a href="./product.html?id=${encodeURIComponent(product.id)}">${product.nombre}</a></h3>
       <p class="card-desc">${product.descripcion}</p>
-      <span class="card-presentation">📦 Presentación: Tubo de 10 piezas</span>
+      <span class="card-presentation">Presentación: Tubo de 10 piezas</span>
       <div class="card-tags">${tagsHtml}</div>
     </div>
   `;
