@@ -3249,3 +3249,27 @@ ul, ol { list-style: none; }
   width: auto;
   display: inline-flex;
 }
+
+/* ── Video Demo Section ─────────────────────────────────── */
+.video-demo-section {
+  background-color: #fcfcfc;
+  padding-block: var(--space-xl, 6rem);
+}
+
+.video-container-wrap {
+  width: 100%;
+}
+
+.video-wrapper {
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.video-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.video-cta {
+  display: flex;
+  justify-content: center;
+}
