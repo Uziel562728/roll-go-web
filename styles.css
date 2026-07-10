@@ -3252,24 +3252,63 @@ ul, ol { list-style: none; }
 
 /* ── Video Demo Section ─────────────────────────────────── */
 .video-demo-section {
-  background-color: #fcfcfc;
+  position: relative;
+  background: linear-gradient(180deg, var(--bg, #f5f0e8) 0%, var(--bg-alt, #ede7d8) 100%);
   padding-block: var(--space-xl, 6rem);
+  overflow: hidden;
+}
+
+/* Ambient light glow behind video */
+.video-demo-section::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(212, 104, 72, 0.14) 0%, rgba(212, 104, 72, 0) 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.video-demo-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom salmon eyebrow for this section */
+.video-demo-section .section-eyebrow {
+  color: var(--salmon, #d46848) !important;
+  font-weight: 700;
+  background-color: rgba(212, 104, 72, 0.07);
+  padding: 0.35rem 0.95rem;
+  border-radius: var(--r-pill, 9999px);
+  border: 1px solid rgba(212, 104, 72, 0.12);
+  margin-bottom: 1.25rem;
 }
 
 .video-container-wrap {
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .video-wrapper {
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+  border: 4px solid var(--salmon, #d46848) !important;
 }
 
 .video-wrapper:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 0 10px 25px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px) scale(1.01);
+  border-color: var(--salmon-light, #e89070) !important;
+  box-shadow: 0 30px 60px rgba(212, 104, 72, 0.18), 0 10px 25px rgba(212, 104, 72, 0.1);
 }
 
 .video-cta {
   display: flex;
   justify-content: center;
+  position: relative;
+  z-index: 2;
 }
