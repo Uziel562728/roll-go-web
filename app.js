@@ -1559,6 +1559,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   initFloatingWA();
   initContactFormUI();
+  initAutoplayVideo();
 
   console.log('🍣 Roll & Go app initialized');
 });
+
+/* ── MODULE: AUTOPLAY VIDEO ON SCROLL ── */
+function initAutoplayVideo() {
+  const video = document.querySelector('.video-demo-section video');
+  if (!video) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        video.play().catch(err => console.log('[RollGo] Autoplay blocked or interrupted:', err));
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.15 }); // Play when at least 15% of the video section is visible
+
+  observer.observe(video);
+}
+
