@@ -439,7 +439,7 @@ function renderCartItems(animate = false) {
     li.dataset.id = item.id;
     li.style.setProperty('--item-index', index);
     li.innerHTML = `
-      <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img" onerror="this.src='./images/logo-roll-go.png'" />
+      <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img" onerror="this.src='./images/logo-roll-go.webp'" />
       <div class="cart-item-info">
         <h4 class="cart-item-name">${item.nombre}</h4>
         <p class="cart-item-desc">${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · Tubo de 10 piezas</p>

@@ -3,13 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roll & Go — El sushi que va con vos</title>
-  <meta name="description" content="Roll & Go: sushi artesanal premium con salsa de soja incluida. Kosher, vegano, hecho al momento. Pedí por WhatsApp." />
-  <meta name="keywords" content="sushi, roll, delivery, kosher, vegano, salmón, palta, Roll and Go, Buenos Aires" />
-  <meta property="og:title" content="Roll & Go — El sushi que va con vos" />
-  <meta property="og:description" content="Sushi artesanal premium on-the-go. Kosher, vegano, hecho al momento." />
-  <meta property="og:image" content="./images/logo-roll-go.png" />
+  <title>Roll & Go — Delivery de Sushi Kosher y Vegano en Buenos Aires</title>
+  <meta name="description" content="Roll & Go: sushi artesanal premium listo para llevar con salsa de soja integrada. Opciones 100% Kosher y veganas. Delivery rápido en Buenos Aires." />
+  <meta name="keywords" content="sushi, roll, delivery, kosher, vegano, salmon, palta, Roll and Go, Buenos Aires" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="./images/logo-roll-go.png" type="image/png" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://uziel562728.github.io/roll-go-web/" />
+
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://uziel562728.github.io/roll-go-web/" />
+  <meta property="og:title" content="Roll & Go — El sushi que va con vos" />
+  <meta property="og:description" content="Sushi artesanal premium en tubos listos para llevar. 100% Kosher y vegano." />
+  <meta property="og:image" content="https://uziel562728.github.io/roll-go-web/images/logo-roll-go.webp" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://uziel562728.github.io/roll-go-web/" />
+  <meta name="twitter:title" content="Roll & Go — El sushi que va con vos" />
+  <meta name="twitter:description" content="Sushi artesanal premium en tubos listos para llevar. 100% Kosher y vegano." />
+  <meta name="twitter:image" content="https://uziel562728.github.io/roll-go-web/images/logo-roll-go.webp" />
+  
   <meta name="theme-color" content="#f5f0e8" />
 
   <!-- Fonts -->
@@ -19,6 +36,48 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="./styles.css" />
+
+  <!-- JSON-LD Structured Data for Local Business -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FoodEstablishment",
+    "name": "Roll & Go",
+    "image": "https://uziel562728.github.io/roll-go-web/images/logo-roll-go.webp",
+    "@id": "https://uziel562728.github.io/roll-go-web/#foodestablishment",
+    "url": "https://uziel562728.github.io/roll-go-web/",
+    "telephone": "+541151816111",
+    "priceRange": "$$",
+    "servesCuisine": "Sushi, Japanese, Kosher, Vegan",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Terrada 592",
+      "addressLocality": "Buenos Aires",
+      "addressCountry": "AR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -34.624792,
+      "longitude": -58.473582
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Sunday"
+      ],
+      "opens": "19:00",
+      "closes": "23:30"
+    },
+    "sameAs": [
+      "https://instagram.com/sushi.roll.go"
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -26,7 +85,7 @@
 <header class="navbar" id="navbar" role="banner">
   <div class="nav-inner">
     <a href="./" class="nav-logo" id="navLogo" aria-label="Roll &amp; Go inicio">
-      <img src="./images/logo-roll-go.png" alt="Roll &amp; Go" class="nav-logo-img" width="120" height="30" />
+      <img src="./images/logo-roll-go.webp" alt="Roll &amp; Go" class="nav-logo-img" width="120" height="30" />
     </a>
 
     <nav class="nav-links" role="navigation" aria-label="Menú principal">
@@ -76,7 +135,7 @@
 
     <h1 class="hero-logo-wrapper" id="heroLogoWrapper">
       <img
-        src="./images/logo-roll-go.png"
+        src="./images/logo-roll-go.webp"
         alt="Roll &amp; Go — El sushi que va con vos"
         class="hero-logo-img"
         id="heroLogoImg"
@@ -265,7 +324,7 @@
           <div class="product-demo-shadow"></div>
 
           <img
-            src="./images/tubo-real.png"
+            src="./images/tubo-real.webp"
             alt=""
             class="product-demo-tube"
             id="demoTube"
@@ -275,13 +334,13 @@
           />
 
           <div class="product-demo-sushi-stack" id="demoSushiStack">
-            <img src="./images/pieza-sushi-3.png" alt="" class="product-demo-sushi sushi-3" id="demoSushi3" width="180" height="180" loading="lazy" />
-            <img src="./images/pieza-sushi-2.png" alt="" class="product-demo-sushi sushi-2" id="demoSushi2" width="180" height="180" loading="lazy" />
-            <img src="./images/pieza-sushi-1.png" alt="" class="product-demo-sushi sushi-1" id="demoSushi1" width="180" height="180" loading="lazy" />
+            <img src="./images/pieza-sushi-3.webp" alt="" class="product-demo-sushi sushi-3" id="demoSushi3" width="180" height="180" loading="lazy" />
+            <img src="./images/pieza-sushi-2.webp" alt="" class="product-demo-sushi sushi-2" id="demoSushi2" width="180" height="180" loading="lazy" />
+            <img src="./images/pieza-sushi-1.webp" alt="" class="product-demo-sushi sushi-1" id="demoSushi1" width="180" height="180" loading="lazy" />
           </div>
 
           <img
-            src="./images/soja-real.png"
+            src="./images/soja-real.webp"
             alt=""
             class="product-demo-soy"
             id="demoSoy"
@@ -388,6 +447,9 @@
       <div class="footer-brand">
         <span class="footer-logo">ROLL <span class="logo-amp">&amp;</span> GO</span>
         <p class="footer-tagline">El sushi que va con vos</p>
+        <p class="footer-seo-text" style="font-size: 0.85rem; opacity: 0.7; max-width: 320px; line-height: 1.4; margin-top: 0.75rem;">
+          Ya sea que nos busques como <strong>Roll &amp; Go</strong>, <strong>Roll and Go</strong>, <strong>Roll Go</strong> o <strong>Rollgo</strong>, nuestra meta es ofrecerte el mejor sushi artesanal premium en tubos cerrados de 10 piezas, listo para llevar y disfrutar.
+        </p>
       </div>
       <div class="footer-links">
         <a href="https://wa.me/541151816111?text=Hola%20quiero%20hacer%20un%20pedido%20de%20Roll%20%26%20Go" target="_blank" rel="noopener noreferrer">WhatsApp</a>
