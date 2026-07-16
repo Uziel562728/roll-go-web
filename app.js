@@ -172,58 +172,29 @@ function initHero() {
 
 
 
-/* ─────────────────────────────────────────────────────────
-   MODULE: SCROLL REVEALS (GSAP + ScrollTrigger)
-───────────────────────────────────────────────────────── */
 function initScrollReveals() {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-    // CSS fallback
-    document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('is-visible'));
-    return;
-  }
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  document.querySelectorAll('[data-reveal]').forEach((el, i) => {
-    const delay = i * 0.04;
-    ScrollTrigger.create({
-      trigger: el,
-      start: 'top 88%',
-      once: true,
-      onEnter: () => {
-        gsap.to(el, {
-          y: 0, opacity: 1,
-          duration: 0.7,
-          delay,
-          ease: 'power3.out',
-          onComplete: () => el.classList.add('is-visible'),
-        });
-      },
-    });
+  // Show everything immediately without delay or scroll animation
+  document.querySelectorAll('[data-reveal]').forEach(el => {
+    el.classList.add('is-visible');
+    if (typeof gsap !== 'undefined') {
+      gsap.set(el, { y: 0, opacity: 1 });
+    } else {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    }
   });
 
-  // Section titles — staggered
   document.querySelectorAll('.section-header').forEach(header => {
     const children = header.querySelectorAll('[data-reveal]');
-    children.forEach((child, i) => {
-      gsap.set(child, { y: 28, opacity: 0 });
-    });
-    ScrollTrigger.create({
-      trigger: header,
-      start: 'top 84%',
-      once: true,
-      onEnter: () => {
-        gsap.to(children, {
-          y: 0, opacity: 1,
-          duration: 0.65,
-          stagger: 0.1,
-          ease: 'power3.out',
-        });
-      },
+    children.forEach(child => {
+      if (typeof gsap !== 'undefined') {
+        gsap.set(child, { y: 0, opacity: 1 });
+      } else {
+        child.style.opacity = '1';
+        child.style.transform = 'none';
+      }
     });
   });
-
-
 }
 
 
@@ -1053,22 +1024,8 @@ async function loadMenu() {
     grid.classList.remove('hidden');
 
     requestAnimationFrame(() => {
-      // Robust native IntersectionObserver for card slide-in reveals
-      if (typeof IntersectionObserver !== 'undefined') {
-        const cardObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const card = entry.target;
-              card.classList.add('is-visible');
-              cardObserver.unobserve(card);
-            }
-          });
-        }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
-
-        cards.forEach(card => cardObserver.observe(card));
-      } else {
-        cards.forEach(card => card.classList.add('is-visible'));
-      }
+      // Make all cards visible immediately
+      cards.forEach(card => card.classList.add('is-visible'));
 
       syncCardQtyControls();
       initTilt(Array.from(grid.querySelectorAll('.menu-card')));

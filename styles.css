@@ -154,13 +154,13 @@ ul, ol { list-style: none; }
 
 /* Reveal animation base — driven by GSAP */
 [data-reveal] {
-  opacity: 0;
-  transform: translateY(28px);
+  opacity: 1;
+  transform: translateY(0);
 }
 [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.7s var(--ease-spring), transform 0.7s var(--ease-spring);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
 
@@ -860,16 +860,16 @@ ul, ol { list-style: none; }
   transform-style: preserve-3d;
   will-change: transform;
   position: relative;
-  opacity: 0;
-  transform: translateY(30px);
+  opacity: 1;
+  transform: translateY(0);
   cursor: pointer;
 }
 .menu-card.is-visible {
   opacity: 1;
   transform: translateY(0);
   transition:
-    opacity 0.6s var(--ease-spring),
-    transform 0.6s var(--ease-spring),
+    opacity 0.2s var(--ease),
+    transform 0.2s var(--ease),
     box-shadow 0.35s var(--ease);
 }
 .menu-card:hover {
@@ -1064,8 +1064,8 @@ ul, ol { list-style: none; }
   transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease);
 }
 .step-item[data-reveal] {
-  opacity: 0;
-  transform: translateY(24px);
+  opacity: 1;
+  transform: translateY(0);
 }
 .step-item[data-reveal].is-visible {
   opacity: 1;
@@ -1149,8 +1149,8 @@ ul, ol { list-style: none; }
   transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease);
 }
 .benefit-card[data-reveal] {
-  opacity: 0;
-  transform: translateY(24px);
+  opacity: 1;
+  transform: translateY(0);
 }
 .benefit-card[data-reveal].is-visible {
   opacity: 1;
