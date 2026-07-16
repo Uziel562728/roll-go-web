@@ -45,15 +45,25 @@
             "@type": "Product",
             "name": product.nombre,
             "image": `https://rollandgo.com.ar${product.imagen.replace('./', '/')}`,
-            "description": product.descripcion,
-            "offers": {
-              "@type": "Offer",
-              "url": window.location.href.replace('uziel562728.github.io/roll-go-web', 'rollandgo.com.ar'),
-              "priceCurrency": "ARS",
-              "price": "0.00",
-              "availability": "https://schema.org/InStock"
-            }
+            "description": product.descripcion
           };
+
+          // Use real price if available, otherwise omit the offers block entirely
+          const rawPrice = product.precio !== undefined ? product.precio : product.price;
+          if (rawPrice !== undefined && rawPrice !== null) {
+            // Remove symbols, spaces, thousands separators (dots) and parse as float/number
+            const cleanPriceStr = String(rawPrice).replace(/\./g, '').replace(/,/g, '.').replace(/[^0-9.]/g, '');
+            const cleanPrice = parseFloat(cleanPriceStr);
+            if (!isNaN(cleanPrice)) {
+              schema.offers = {
+                "@type": "Offer",
+                "url": window.location.href.replace('uziel562728.github.io/roll-go-web', 'rollandgo.com.ar'),
+                "priceCurrency": "ARS",
+                "price": cleanPrice,
+                "availability": "https://schema.org/InStock"
+              };
+            }
+          }
 
           const script = document.createElement('script');
           script.type = 'application/ld+json';
