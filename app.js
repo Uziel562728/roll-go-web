@@ -724,6 +724,7 @@ function renderCartItems(animate = false) {
   const cartEmpty = document.getElementById('cartEmpty');
   const cartSummaryBox = document.getElementById('cartSummaryBox');
   const btnNextStep = document.getElementById('btnNextStep');
+  const btnClearCart = document.getElementById('btnClearCart');
 
   if (!container) return;
 
@@ -733,6 +734,7 @@ function renderCartItems(animate = false) {
     cartEmpty?.classList.remove('hidden');
     cartSummaryBox?.classList.add('hidden');
     btnNextStep?.classList.add('hidden');
+    btnClearCart?.classList.add('hidden');
     setVisualStep(1); // Auto-back to step 1
     updateCartSummary();
     return;
@@ -741,6 +743,7 @@ function renderCartItems(animate = false) {
   cartEmpty?.classList.add('hidden');
   cartSummaryBox?.classList.remove('hidden');
   btnNextStep?.classList.remove('hidden');
+  btnClearCart?.classList.remove('hidden');
   updateCartSummary();
 
   cart.forEach((item, index) => {
@@ -1125,6 +1128,11 @@ function initCartSidebarUI() {
   const btnBackToCart = document.getElementById('btnBackToCart');
   btnNextStep?.addEventListener('click', () => setVisualStep(2));
   btnBackToCart?.addEventListener('click', () => setVisualStep(1));
+
+  const btnClearCart = document.getElementById('btnClearCart');
+  btnClearCart?.addEventListener('click', () => {
+    clearCart();
+  });
 
   const methodDelivery = document.getElementById('methodDelivery');
   const methodPickup = document.getElementById('methodPickup');
