@@ -10,14 +10,14 @@
   <link rel="icon" href="./images/favicon.png" type="image/png" />
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://uziel562728.github.io/roll-go-web/product.html" />
+  <link rel="canonical" href="https://rollandgo.com.ar/product.html" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://uziel562728.github.io/roll-go-web/product.html" />
+  <meta property="og:url" content="https://rollandgo.com.ar/product.html" />
   <meta property="og:title" content="Variedades de Rolls — Roll & Go" />
   <meta property="og:description" content="Conocé en detalle los ingredientes y variedades de nuestros rolls de sushi premium." />
-  <meta property="og:image" content="https://uziel562728.github.io/roll-go-web/images/logo-roll-go.webp" />
+  <meta property="og:image" content="https://rollandgo.com.ar/images/logo-roll-go.webp" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,6 +26,43 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="./styles.css" />
+
+  <!-- Dynamic JSON-LD Structured Data for Product -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('id');
+      if (!productId) return;
+
+      fetch('./data/menu.json')
+        .then(res => res.json())
+        .then(products => {
+          const product = Array.isArray(products) ? products.find(item => item.id === productId) : null;
+          if (!product) return;
+
+          const schema = {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": product.nombre,
+            "image": `https://rollandgo.com.ar${product.imagen.replace('./', '/')}`,
+            "description": product.descripcion,
+            "offers": {
+              "@type": "Offer",
+              "url": window.location.href.replace('uziel562728.github.io/roll-go-web', 'rollandgo.com.ar'),
+              "priceCurrency": "ARS",
+              "price": "0.00",
+              "availability": "https://schema.org/InStock"
+            }
+          };
+
+          const script = document.createElement('script');
+          script.type = 'application/ld+json';
+          script.text = JSON.stringify(schema);
+          document.head.appendChild(script);
+        })
+        .catch(err => console.error('Error generating Product schema:', err));
+    });
+  </script>
 </head>
 <body class="product-detail-page">
 
