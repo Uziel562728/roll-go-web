@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://uziel562728.github.io/roll-go-web/sitemap.xml
+Sitemap: https://rollandgo.com.ar/sitemap.xml
