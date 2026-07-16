@@ -687,6 +687,11 @@ window.addEventListener('popstate', (e) => {
   }
 });
 
+// Update cart state and UI when page is shown (back/forward history navigation)
+window.addEventListener('pageshow', () => {
+  loadCartFromStorage();
+});
+
 // Toggle Cart Sidebar Modal
 function toggleCart(openState) {
   const sidebar = document.getElementById('cartSidebar');

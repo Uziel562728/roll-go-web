@@ -314,6 +314,11 @@ window.addEventListener('popstate', (e) => {
   }
 });
 
+// Update cart state and UI when page is shown (back/forward history navigation)
+window.addEventListener('pageshow', () => {
+  loadCartFromStorage();
+});
+
 function toggleCart(openState) {
   const sidebar = document.getElementById('cartSidebar');
   if (!sidebar) return;
@@ -731,10 +736,6 @@ async function loadProductDetail() {
     document.getElementById('btnAddToOrder')?.addEventListener('click', () => {
       if (currentProduct) {
         addToCart(currentProduct, purchaseQty);
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
-        if (!isMobile) {
-          toggleCart(true); // Open sidebar to checkout on desktop only
-        }
       }
     });
 

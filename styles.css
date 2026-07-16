@@ -249,7 +249,19 @@ ul, ol { list-style: none; }
 }
 
 @media (min-width: 900px) {
-  .nav-links { display: flex; }
+  .nav-logo {
+    flex: 1 0 0;
+    justify-content: flex-start;
+  }
+  .nav-links {
+    display: flex;
+    flex: 0 0 auto;
+  }
+  .nav-inner::after {
+    content: "";
+    flex: 1 0 0;
+    pointer-events: none;
+  }
   .hamburger { display: none; }
   .nav-actions { margin-left: 0; }
 }
