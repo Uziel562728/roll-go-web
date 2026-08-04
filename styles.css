@@ -1327,6 +1327,24 @@ ul, ol { list-style: none; }
   color: rgba(255,255,255,0.25);
 }
 
+.footer-credit {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+}
+
+.footer-credit a {
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.footer-credit a:hover {
+  color: var(--salmon);
+}
+
 
 /* ── FLOATING WHATSAPP ──────────────────────────────────── */
 .wa-float {
