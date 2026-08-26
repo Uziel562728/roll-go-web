@@ -571,6 +571,28 @@
 <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
 <!-- Vanilla Tilt -->
 <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+<!-- Pop-up Campaña Nuevos Productos -->
+<div class="campaign-popup" id="campaignPopup" role="dialog" aria-modal="true" aria-label="Nuevos Productos Roll & Go" hidden>
+  <div class="campaign-popup-backdrop" id="campaignPopupBackdrop"></div>
+  <div class="campaign-popup-content">
+    <button type="button" class="campaign-popup-close" id="campaignPopupClose" aria-label="Cerrar ventana emergente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <a href="#menu-card-poke-salad" class="campaign-popup-action-btn" id="campaignPopupAction" aria-label="Ver los nuevos productos: Poke Salad, Sushi Burgers y Triangulitos Rebozados">
+      <div class="campaign-popup-image-wrapper">
+        <img
+          src="./images/pop up de nuevos productos .png"
+          alt="Nuevos productos Roll&Go: Poke Salad, Sushi Burgers y Triangulitos Rebozados"
+          class="campaign-popup-image"
+          loading="eager"
+        />
+      </div>
+    </a>
+  </div>
+</div>
+
 <!-- App -->
 <script src="./app.js"></script>
 

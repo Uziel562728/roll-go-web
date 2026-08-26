@@ -83,24 +83,24 @@ const MENU = [
   {
     id: 'panizado-salmon-palta',
     nombre: 'Panizado Salmón Palta',
-    descripcion: 'Salmón y palta cubiertos con panko crocante japonés. El contraste de texturas perfecto.',
+    descripcion: 'Salmón y palta cubiertos con un rebozado crocante. El contraste de texturas perfecto.',
     categoria: 'panizado',
     imagen: '/images/Panizado Salmón Palta.png',
     imagenTubo: '/images/tubos fotos/Panizado Salmón Palta tubo .png',
-    tags: ['Salmón', 'Palta', 'Panko'],
+    tags: ['Salmón', 'Palta', 'Rebozado'],
     destacado: false,
-    ingredientes: ['Salmón', 'Palta', 'Panko', 'arroz', 'alga']
+    ingredientes: ['Salmón', 'Palta', 'arroz', 'alga']
   },
   {
     id: 'panizado-salmon-palta-philadelphia',
     nombre: 'Panizado Salmón Palta Philadelphia',
-    descripcion: 'El favorito de la casa: salmón, palta y Philadelphia todo envuelto en un panko dorado irresistible.',
+    descripcion: 'El favorito de la casa: salmón, palta y Philadelphia todo envuelto en un rebozado dorado irresistible.',
     categoria: 'panizado',
     imagen: '/images/Panizado Salmón Palta Philadelphia.png',
     imagenTubo: '/images/tubos fotos/Panizado Salmón Palta Philadelphia tubo .png',
-    tags: ['Salmón', 'Palta', 'Philadelphia', 'Panko'],
+    tags: ['Salmón', 'Palta', 'Philadelphia', 'Rebozado'],
     destacado: true,
-    ingredientes: ['Salmón', 'Palta', 'Queso', 'Panko', 'arroz', 'alga']
+    ingredientes: ['Salmón', 'Palta', 'Queso', 'arroz', 'alga']
   },
 ];
 

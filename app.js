@@ -405,7 +405,11 @@ function buildOrderMessage({ nombre, telefono, productos, cantidades, notas, dir
     `📞 *Teléfono:* ${telefono}`,
     '',
     '*Productos:*',
-    ...productos.map((producto, index) => `  • ${producto} ×${cantidades[index] || 1} (Tubo de 10 u.)`)
+    ...productos.map((prod, index) => {
+      const isNew = ['poke-salad', 'sushi-burgers', 'triangulitos-rebozados'].includes(prod.id);
+      const suffix = isNew ? '' : ' (Tubo de 10 u.)';
+      return `  • ${prod.nombre} ×${cantidades[index] || 1}${suffix}`;
+    })
   ];
 
   if (notas) lines.push('', `📝 *Notas:* ${notas}`);
@@ -581,10 +585,63 @@ function updateCartSummary() {
     title.dataset.count = totalQty > 0 ? `${totalQty}` : '';
   }
 
+  const newProductIds = ['poke-salad', 'sushi-burgers', 'triangulitos-rebozados'];
+  
+  // Calcular cantidad de tubos (sólo tradicionales)
+  const traditionalQty = cart
+    .filter(item => !newProductIds.includes(item.id))
+    .reduce((sum, item) => sum + item.qty, 0);
+
+  // Calcular cantidad de porciones (campaña)
+  const campaignQty = cart
+    .filter(item => newProductIds.includes(item.id))
+    .reduce((sum, item) => sum + item.qty, 0);
+
   const summaryTubes = document.getElementById('summaryTubes');
   const summaryPieces = document.getElementById('summaryPieces');
-  if (summaryTubes) summaryTubes.textContent = `${totalQty} u.`;
-  if (summaryPieces) summaryPieces.textContent = `${totalQty * 10} piezas`;
+  const summaryTubesRow = summaryTubes?.closest('.summary-row');
+  const summaryPiecesRow = summaryPieces?.closest('.summary-row');
+  const summaryNote = document.querySelector('#cartSidebar .summary-note') || document.querySelector('.summary-note');
+
+  // Mostrar filas tradicionales y nota sólo si hay sushi tradicional
+  if (traditionalQty > 0) {
+    if (summaryTubesRow) summaryTubesRow.style.display = '';
+    if (summaryPiecesRow) summaryPiecesRow.style.display = '';
+    if (summaryNote) summaryNote.style.display = '';
+    
+    if (summaryTubes) summaryTubes.textContent = `${traditionalQty} u.`;
+    if (summaryPieces) summaryPieces.textContent = `${traditionalQty * 10} piezas`;
+  } else {
+    if (summaryTubesRow) summaryTubesRow.style.display = 'none';
+    if (summaryPiecesRow) summaryPiecesRow.style.display = 'none';
+    if (summaryNote) summaryNote.style.display = 'none';
+  }
+
+  // Fila dinámica para nuevos productos
+  let campaignRow = document.getElementById('summaryCampaignProducts');
+  if (campaignQty > 0) {
+    if (!campaignRow) {
+      campaignRow = document.createElement('div');
+      campaignRow.className = 'summary-row';
+      campaignRow.id = 'summaryCampaignProducts';
+      campaignRow.innerHTML = `
+        <span>Total de porciones:</span>
+        <strong id="summaryCampaignQty">0 u.</strong>
+      `;
+      const summaryBox = document.getElementById('cartSummaryBox');
+      if (summaryBox) {
+        if (summaryNote) {
+          summaryBox.insertBefore(campaignRow, summaryNote);
+        } else {
+          summaryBox.appendChild(campaignRow);
+        }
+      }
+    }
+    const qtySpan = document.getElementById('summaryCampaignQty');
+    if (qtySpan) qtySpan.textContent = `${campaignQty} u.`;
+  } else {
+    if (campaignRow) campaignRow.remove();
+  }
 }
 
 // Update cart counter badges & floating button visibility
@@ -761,7 +818,12 @@ function renderCartItems(animate = false) {
       <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img" onerror="this.src='./images/logo-roll-go.webp'" />
       <div class="cart-item-info">
         <h4 class="cart-item-name">${item.nombre}</h4>
-        <p class="cart-item-desc">${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · Tubo de 10 piezas</p>
+        <p class="cart-item-desc">
+          ${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · 
+          ${item.id === 'poke-salad' ? 'Bowl individual' : 
+            (item.id === 'sushi-burgers' ? '1 unidad' : 
+             (item.id === 'triangulitos-rebozados' ? 'Porción de 2 unidades' : 'Tubo de 10 piezas'))}
+        </p>
       </div>
       <div class="cart-item-controls">
         <button class="btn-qty-adjust btn-qty-minus" aria-label="Disminuir cantidad" data-id="${item.id}">-</button>
@@ -936,6 +998,7 @@ function clearCart() {
 function buildCard(product) {
   const article = document.createElement('article');
   article.className = 'menu-card';
+  article.id = `menu-card-${product.id}`;
   article.dataset.category = product.categoria;
 
   const badgeClass = 'card-badge';
@@ -974,7 +1037,11 @@ function buildCard(product) {
     <div class="card-body">
       <h3 class="card-name"><a href="./product.html?id=${encodeURIComponent(product.id)}">${product.nombre}</a></h3>
       <p class="card-desc">${product.descripcion}</p>
-      <span class="card-presentation">Presentación: Tubo de 10 piezas</span>
+      <span class="card-presentation">
+        ${product.id === 'poke-salad' ? 'Presentación: Bowl individual' : 
+          (product.id === 'sushi-burgers' ? 'Presentación: Porción de 1 unidad' : 
+           (product.id === 'triangulitos-rebozados' ? 'Presentación: Porción de 2 unidades' : 'Presentación: Tubo de 10 piezas'))}
+      </span>
       <div class="card-tags">${tagsHtml}</div>
     </div>
   `;
@@ -1200,7 +1267,7 @@ function initCartSidebarUI() {
     const notes = cleanText(notesInput?.value);
     const address = cleanText(orderAddressInput?.value);
 
-    const productos = cart.map(item => item.nombre);
+    const productos = cart.map(item => ({ nombre: item.nombre, id: item.id }));
     const cantidades = cart.map(item => item.qty);
 
     try {
@@ -1507,6 +1574,140 @@ function initInteractiveSteps() {
 
 
 /* ─────────────────────────────────────────────────────────
+   MODULE: CAMPAIGN POPUP (NUEVOS PRODUCTOS)
+   ───────────────────────────────────────────────────────── */
+const NEW_PRODUCTS_CAMPAIGN_ENABLED = true; // Switch manual para desactivar el popup
+const CAMPAIGN_START_DATE = "2026-08-25";
+const CAMPAIGN_END_DATE   = "2026-09-25";
+
+function initCampaignPopup() {
+  const popup = document.getElementById('campaignPopup');
+  if (!popup) return;
+
+  const closeBtn = document.getElementById('campaignPopupClose');
+  const backdrop = document.getElementById('campaignPopupBackdrop');
+  const actionBtn = document.getElementById('campaignPopupAction');
+
+  // Si está deshabilitado manualmente, no hacer nada
+  if (!NEW_PRODUCTS_CAMPAIGN_ENABLED) return;
+
+  const now = new Date();
+
+  // Parsear fechas en formato local para evitar discrepancias de zona horaria (UTC vs Local)
+  const [startY, startM, startD] = CAMPAIGN_START_DATE.split('-').map(Number);
+  const [endY, endM, endD] = CAMPAIGN_END_DATE.split('-').map(Number);
+
+  // Inicio: 00:00:00 del primer día de la campaña
+  const startDate = new Date(startY, startM - 1, startD, 0, 0, 0, 0);
+  // Fin: 23:59:59 del último día de la campaña (inclusive)
+  const endDate = new Date(endY, endM - 1, endD, 23, 59, 59, 999);
+
+  // Verificar si estamos dentro del rango temporal
+  if (now < startDate || now > endDate) {
+    return;
+  }
+
+  // Verificar si ya fue descartado en esta misma sesión
+  const isDismissed = sessionStorage.getItem('newProductsPopupDismissed');
+  if (isDismissed === 'true') {
+    return;
+  }
+
+  const openPopup = () => {
+    popup.removeAttribute('hidden');
+    // Forzar reflow para asegurar la transición suave
+    popup.offsetHeight;
+    popup.classList.add('is-open');
+    document.body.classList.add('popup-open');
+    
+    // Detener scroll con Lenis si está activo
+    if (typeof lenis !== 'undefined' && lenis) {
+      lenis.stop();
+    }
+  };
+
+  const closePopup = () => {
+    popup.classList.remove('is-open');
+    document.body.classList.remove('popup-open');
+    
+    // Reanudar scroll con Lenis si está activo
+    if (typeof lenis !== 'undefined' && lenis) {
+      lenis.start();
+    }
+
+    sessionStorage.setItem('newProductsPopupDismissed', 'true');
+
+    // Esperar a que termine la transición de opacidad antes de ocultar del DOM/A11y tree
+    setTimeout(() => {
+      if (!popup.classList.contains('is-open')) {
+        popup.setAttribute('hidden', '');
+      }
+    }, 450);
+  };
+
+  // Event listeners con detención de propagación para evitar que el click en la X navegue a los productos
+  closeBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    closePopup();
+  });
+
+  backdrop?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    closePopup();
+  });
+
+  actionBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    closePopup();
+
+    // Resetear el filtro a 'all' si no lo estuviera para asegurar que las tarjetas sean visibles
+    const allFilterBtn = document.querySelector('.filter-tab[data-filter="all"]');
+    if (allFilterBtn && activeFilter !== 'all') {
+      allFilterBtn.click();
+    }
+
+    // Scroll suave directo a la tarjeta del Poke Salad (primer nuevo producto)
+    const targetCard = document.getElementById('menu-card-poke-salad');
+    if (targetCard) {
+      const navH = document.getElementById('navbar')?.offsetHeight || 68;
+      // Scroll suave usando Lenis si está disponible
+      if (typeof lenis !== 'undefined' && lenis) {
+        lenis.scrollTo(targetCard, { offset: -navH - 12, duration: 1.2 });
+      } else {
+        const top = targetCard.getBoundingClientRect().top + window.scrollY - navH - 12;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    } else {
+      // Fallback a la sección de menú general si la tarjeta no se encuentra
+      const menuSection = document.getElementById('menu');
+      if (menuSection) {
+        const navH = document.getElementById('navbar')?.offsetHeight || 68;
+        if (typeof lenis !== 'undefined' && lenis) {
+          lenis.scrollTo(menuSection, { offset: -navH - 12, duration: 1.2 });
+        } else {
+          const top = menuSection.getBoundingClientRect().top + window.scrollY - navH - 12;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }
+    }
+  });
+
+  // Cerrar con tecla Escape
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape' && !popup.hasAttribute('hidden')) {
+      closePopup();
+    }
+  };
+  document.addEventListener('keydown', handleKeyDown);
+
+  // Retrasar sutilmente la aparición para permitir una carga fluida de la interfaz de usuario
+  setTimeout(openPopup, 800);
+}
+
+
+/* ─────────────────────────────────────────────────────────
    BOOT — initialize everything
    ───────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1536,6 +1737,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   initFloatingWA();
   initContactFormUI();
   initAutoplayVideo();
+  
+  // Inicializar pop-up de campaña
+  initCampaignPopup();
 
   console.log('🍣 Roll & Go app initialized');
 });

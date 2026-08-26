@@ -46,23 +46,59 @@
   {
     "id": "panizado-salmon-palta",
     "nombre": "Panizado Salmón Palta",
-    "descripcion": "Salmón y palta cubiertos con panko crocante japonés. El contraste de texturas perfecto.",
+    "descripcion": "Salmón y palta cubiertos con un rebozado crocante. El contraste de texturas perfecto.",
     "categoria": "panizado",
     "imagen": "./images/panizado-salmon-palta.webp",
     "imagenTubo": "./images/tubos fotos/panizado-salmon-palta-tubo.webp",
-    "tags": ["Salmón", "Palta", "Panko"],
+    "tags": ["Salmón", "Palta", "Rebozado"],
     "destacado": false,
-    "ingredientes": ["Salmón", "Palta", "Panko", "arroz", "alga"]
+    "ingredientes": ["Salmón", "Palta", "arroz", "alga"]
   },
   {
     "id": "panizado-salmon-palta-philadelphia",
     "nombre": "Panizado Salmón Palta Philadelphia",
-    "descripcion": "El favorito de la casa: salmón, palta y Philadelphia todo envuelto en un panko dorado irresistible.",
+    "descripcion": "El favorito de la casa: salmón, palta y Philadelphia todo envuelto en un rebozado dorado irresistible.",
     "categoria": "panizado",
     "imagen": "./images/panizado-salmon-palta-philadelphia.webp",
     "imagenTubo": "./images/tubos fotos/panizado-salmon-palta-philadelphia-tubo.webp",
-    "tags": ["Salmón", "Palta", "Philadelphia", "Panko"],
+    "tags": ["Salmón", "Palta", "Philadelphia", "Rebozado"],
     "destacado": true,
-    "ingredientes": ["Salmón", "Palta", "Queso", "Panko", "arroz", "alga"]
+    "ingredientes": ["Salmón", "Palta", "Queso", "arroz", "alga"]
+  },
+  {
+    "id": "poke-salad",
+    "nombre": "Poke Salad",
+    "descripcion": "Un bowl fresco y abundante con arroz de sushi, cubos de salmón fresco, palta cremosa y semillas selectas.",
+    "categoria": "clasico",
+    "imagen": "./images/poke-salad-1.webp",
+    "imagenTubo": "./images/poke-salad-2.webp",
+    "tags": ["Salmón", "Palta", "Bowl"],
+    "destacado": true,
+    "ingredientes": ["Salmón", "Palta", "arroz", "semillas"],
+    "precio": null
+  },
+  {
+    "id": "sushi-burgers",
+    "nombre": "Sushi Burgers",
+    "descripcion": "Dos tapas crocantes de arroz rebozado crujiente, rellenas de salmón fresco, palta y queso crema.",
+    "categoria": "panizado",
+    "imagen": "./images/sushi-burger-1.webp",
+    "imagenTubo": "./images/sushi-burger-2.webp",
+    "tags": ["Salmón", "Palta", "Rebozado", "Queso"],
+    "destacado": true,
+    "ingredientes": ["Salmón", "Palta", "Queso", "arroz"],
+    "precio": null
+  },
+  {
+    "id": "triangulitos-rebozados",
+    "nombre": "Triangulitos Rebozados",
+    "descripcion": "Triángulos de sushi rebozados y crocantes, con interior de arroz, salmón y palta.",
+    "categoria": "panizado",
+    "imagen": "./images/triangulitos-rebozados-1.webp",
+    "imagenTubo": "./images/triangulitos-rebozados-2.webp",
+    "tags": ["Salmón", "Palta", "Rebozado"],
+    "destacado": true,
+    "ingredientes": ["Salmón", "Palta", "arroz"],
+    "precio": null
   }
 ]

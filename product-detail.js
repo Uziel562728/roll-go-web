@@ -67,7 +67,11 @@ function buildOrderMessage({ nombre, telefono, productos, cantidades, notas, dir
     `📞 *Teléfono:* ${telefono}`,
     '',
     '*Productos:*',
-    ...productos.map((producto, index) => `  • ${producto} ×${cantidades[index] || 1} (Tubo de 10 u.)`)
+    ...productos.map((prod, index) => {
+      const isNew = ['poke-salad', 'sushi-burgers', 'triangulitos-rebozados'].includes(prod.id);
+      const suffix = isNew ? '' : ' (Tubo de 10 u.)';
+      return `  • ${prod.nombre} ×${cantidades[index] || 1}${suffix}`;
+    })
   ];
 
   if (notas) lines.push('', `📝 *Notas:* ${notas}`);
@@ -210,10 +214,63 @@ function updateCartSummary() {
     title.dataset.count = totalQty > 0 ? `${totalQty}` : '';
   }
 
+  const newProductIds = ['poke-salad', 'sushi-burgers', 'triangulitos-rebozados'];
+  
+  // Calcular cantidad de tubos (sólo tradicionales)
+  const traditionalQty = cart
+    .filter(item => !newProductIds.includes(item.id))
+    .reduce((sum, item) => sum + item.qty, 0);
+
+  // Calcular cantidad de porciones (campaña)
+  const campaignQty = cart
+    .filter(item => newProductIds.includes(item.id))
+    .reduce((sum, item) => sum + item.qty, 0);
+
   const summaryTubes = document.getElementById('summaryTubes');
   const summaryPieces = document.getElementById('summaryPieces');
-  if (summaryTubes) summaryTubes.textContent = `${totalQty} u.`;
-  if (summaryPieces) summaryPieces.textContent = `${totalQty * 10} piezas`;
+  const summaryTubesRow = summaryTubes?.closest('.summary-row');
+  const summaryPiecesRow = summaryPieces?.closest('.summary-row');
+  const summaryNote = document.querySelector('#cartSidebar .summary-note') || document.querySelector('.summary-note');
+
+  // Mostrar filas tradicionales y nota sólo si hay sushi tradicional
+  if (traditionalQty > 0) {
+    if (summaryTubesRow) summaryTubesRow.style.display = '';
+    if (summaryPiecesRow) summaryPiecesRow.style.display = '';
+    if (summaryNote) summaryNote.style.display = '';
+    
+    if (summaryTubes) summaryTubes.textContent = `${traditionalQty} u.`;
+    if (summaryPieces) summaryPieces.textContent = `${traditionalQty * 10} piezas`;
+  } else {
+    if (summaryTubesRow) summaryTubesRow.style.display = 'none';
+    if (summaryPiecesRow) summaryPiecesRow.style.display = 'none';
+    if (summaryNote) summaryNote.style.display = 'none';
+  }
+
+  // Fila dinámica para nuevos productos
+  let campaignRow = document.getElementById('summaryCampaignProducts');
+  if (campaignQty > 0) {
+    if (!campaignRow) {
+      campaignRow = document.createElement('div');
+      campaignRow.className = 'summary-row';
+      campaignRow.id = 'summaryCampaignProducts';
+      campaignRow.innerHTML = `
+        <span>Total de porciones:</span>
+        <strong id="summaryCampaignQty">0 u.</strong>
+      `;
+      const summaryBox = document.getElementById('cartSummaryBox');
+      if (summaryBox) {
+        if (summaryNote) {
+          summaryBox.insertBefore(campaignRow, summaryNote);
+        } else {
+          summaryBox.appendChild(campaignRow);
+        }
+      }
+    }
+    const qtySpan = document.getElementById('summaryCampaignQty');
+    if (qtySpan) qtySpan.textContent = `${campaignQty} u.`;
+  } else {
+    if (campaignRow) campaignRow.remove();
+  }
 }
 
 function updateCartBadges() {
@@ -455,7 +512,12 @@ function renderCartItems(animate = false) {
       <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-img" onerror="this.src='./images/logo-roll-go.webp'" />
       <div class="cart-item-info">
         <h4 class="cart-item-name">${item.nombre}</h4>
-        <p class="cart-item-desc">${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · Tubo de 10 piezas</p>
+        <p class="cart-item-desc">
+          ${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · 
+          ${item.id === 'poke-salad' ? 'Bowl individual' : 
+            (item.id === 'sushi-burgers' ? '1 unidad' : 
+             (item.id === 'triangulitos-rebozados' ? 'Porción de 2 unidades' : 'Tubo de 10 piezas'))}
+        </p>
       </div>
       <div class="cart-item-controls">
         <button class="btn-qty-adjust btn-qty-minus" aria-label="Disminuir cantidad" data-id="${item.id}">-</button>
@@ -562,7 +624,7 @@ function initCartSidebarUI() {
     const notes = cleanText(notesInput?.value);
     const address = cleanText(orderAddressInput?.value);
 
-    const productos = cart.map(item => item.nombre);
+    const productos = cart.map(item => ({ nombre: item.nombre, id: item.id }));
     const cantidades = cart.map(item => item.qty);
 
     try {
@@ -708,6 +770,20 @@ async function loadProductDetail() {
     document.getElementById('detailName').textContent = currentProduct.nombre;
     document.getElementById('detailCategory').textContent = CAT_LABEL[currentProduct.categoria] || currentProduct.categoria;
     document.getElementById('detailDescLarga').textContent = currentProduct.descripcion;
+
+    // Helper text for dynamic presentation
+    const helperText = document.getElementById('purchaseHelperText');
+    if (helperText) {
+      if (currentProduct.id === 'poke-salad') {
+        helperText.textContent = '1 unidad = 1 Bowl individual';
+      } else if (currentProduct.id === 'sushi-burgers') {
+        helperText.textContent = '1 porción = 1 Sushi Burger';
+      } else if (currentProduct.id === 'triangulitos-rebozados') {
+        helperText.textContent = '1 porción = 2 Triangulitos Rebozados';
+      } else {
+        helperText.textContent = '1 unidad = 1 Tubo de 10 piezas';
+      }
+    }
 
     // Ingredients tags
     const ingredientsContainer = document.getElementById('detailIngredients');
