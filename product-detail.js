@@ -516,7 +516,7 @@ function renderCartItems(animate = false) {
           ${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · 
           ${item.id === 'poke-salad' ? 'Bowl individual' : 
             (item.id === 'sushi-burgers' ? '1 unidad' : 
-             (item.id === 'triangulitos-rebozados' ? 'Porción de 2 unidades' : 'Tubo de 10 piezas'))}
+             (item.id === 'triangulitos-rebozados' ? 'Porción de 4 unidades' : 'Tubo de 10 piezas'))}
         </p>
       </div>
       <div class="cart-item-controls">
@@ -779,7 +779,7 @@ async function loadProductDetail() {
       } else if (currentProduct.id === 'sushi-burgers') {
         helperText.textContent = '1 porción = 1 Sushi Burger';
       } else if (currentProduct.id === 'triangulitos-rebozados') {
-        helperText.textContent = '1 porción = 2 Triangulitos Rebozados';
+        helperText.textContent = '1 porción = 4 Triangulitos Rebozados';
       } else {
         helperText.textContent = '1 unidad = 1 Tubo de 10 piezas';
       }

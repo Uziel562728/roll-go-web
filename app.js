@@ -822,7 +822,7 @@ function renderCartItems(animate = false) {
           ${item.categoria ? CAT_LABEL[item.categoria] || item.categoria : ''} · 
           ${item.id === 'poke-salad' ? 'Bowl individual' : 
             (item.id === 'sushi-burgers' ? '1 unidad' : 
-             (item.id === 'triangulitos-rebozados' ? 'Porción de 2 unidades' : 'Tubo de 10 piezas'))}
+             (item.id === 'triangulitos-rebozados' ? 'Porción de 4 unidades' : 'Tubo de 10 piezas'))}
         </p>
       </div>
       <div class="cart-item-controls">
@@ -1040,7 +1040,7 @@ function buildCard(product) {
       <span class="card-presentation">
         ${product.id === 'poke-salad' ? 'Presentación: Bowl individual' : 
           (product.id === 'sushi-burgers' ? 'Presentación: Porción de 1 unidad' : 
-           (product.id === 'triangulitos-rebozados' ? 'Presentación: Porción de 2 unidades' : 'Presentación: Tubo de 10 piezas'))}
+           (product.id === 'triangulitos-rebozados' ? 'Presentación: Porción de 4 unidades' : 'Presentación: Tubo de 10 piezas'))}
       </span>
       <div class="card-tags">${tagsHtml}</div>
     </div>

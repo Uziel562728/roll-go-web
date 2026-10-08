@@ -6,9 +6,17 @@
     "categoria": "clasico",
     "imagen": "./images/clasico-salmon-palta.webp",
     "imagenTubo": "./images/tubos fotos/clasico-salmon-palta-tubo.webp",
-    "tags": ["Salmón", "Palta"],
+    "tags": [
+      "Salmón",
+      "Palta"
+    ],
     "destacado": false,
-    "ingredientes": ["Salmón", "Palta", "arroz", "alga"]
+    "ingredientes": [
+      "Salmón",
+      "Palta",
+      "arroz",
+      "alga"
+    ]
   },
   {
     "id": "salmon-palta-philadelphia",
@@ -17,9 +25,19 @@
     "categoria": "clasico",
     "imagen": "./images/salmon-palta-philadelphia.webp",
     "imagenTubo": "./images/tubos fotos/salmon-palta-philadelphia-tubo.webp",
-    "tags": ["Salmón", "Palta", "Philadelphia"],
+    "tags": [
+      "Salmón",
+      "Palta",
+      "Philadelphia"
+    ],
     "destacado": false,
-    "ingredientes": ["Salmón", "Palta", "Queso", "arroz", "alga"]
+    "ingredientes": [
+      "Salmón",
+      "Palta",
+      "Queso",
+      "arroz",
+      "alga"
+    ]
   },
   {
     "id": "atun-mayo-spicy-verdeo",
@@ -28,9 +46,19 @@
     "categoria": "clasico",
     "imagen": "./images/atun-mayo-spicy-verdeo.webp",
     "imagenTubo": "./images/tubos fotos/atun-mayo-spicy-verdeo-tubo.webp",
-    "tags": ["Atún", "Mayo Spicy", "Verdeo"],
+    "tags": [
+      "Atún",
+      "Mayo Spicy",
+      "Verdeo"
+    ],
     "destacado": false,
-    "ingredientes": ["Atún", "Mayonesa", "Verdeo", "arroz", "alga"]
+    "ingredientes": [
+      "Atún",
+      "Mayonesa",
+      "Verdeo",
+      "arroz",
+      "alga"
+    ]
   },
   {
     "id": "veggie-rucula-champi-tomate-seco",
@@ -39,9 +67,19 @@
     "categoria": "veggie",
     "imagen": "./images/veggie-rucula-champinon-tomate-seco.webp",
     "imagenTubo": "./images/tubos fotos/veggie-rucula-champinon-tomate-seco-tubo.webp",
-    "tags": ["Rúcula", "Champiñón", "Tomate Seco"],
+    "tags": [
+      "Rúcula",
+      "Champiñón",
+      "Tomate Seco"
+    ],
     "destacado": false,
-    "ingredientes": ["Rúcula", "Champiñón", "Tomate Seco", "arroz", "alga"]
+    "ingredientes": [
+      "Rúcula",
+      "Champiñón",
+      "Tomate Seco",
+      "arroz",
+      "alga"
+    ]
   },
   {
     "id": "panizado-salmon-palta",
@@ -50,9 +88,18 @@
     "categoria": "panizado",
     "imagen": "./images/panizado-salmon-palta.webp",
     "imagenTubo": "./images/tubos fotos/panizado-salmon-palta-tubo.webp",
-    "tags": ["Salmón", "Palta", "Rebozado"],
+    "tags": [
+      "Salmón",
+      "Palta",
+      "Rebozado"
+    ],
     "destacado": false,
-    "ingredientes": ["Salmón", "Palta", "arroz", "alga"]
+    "ingredientes": [
+      "Salmón",
+      "Palta",
+      "arroz",
+      "alga"
+    ]
   },
   {
     "id": "panizado-salmon-palta-philadelphia",
@@ -61,9 +108,20 @@
     "categoria": "panizado",
     "imagen": "./images/panizado-salmon-palta-philadelphia.webp",
     "imagenTubo": "./images/tubos fotos/panizado-salmon-palta-philadelphia-tubo.webp",
-    "tags": ["Salmón", "Palta", "Philadelphia", "Rebozado"],
+    "tags": [
+      "Salmón",
+      "Palta",
+      "Philadelphia",
+      "Rebozado"
+    ],
     "destacado": true,
-    "ingredientes": ["Salmón", "Palta", "Queso", "arroz", "alga"]
+    "ingredientes": [
+      "Salmón",
+      "Palta",
+      "Queso",
+      "arroz",
+      "alga"
+    ]
   },
   {
     "id": "poke-salad",
@@ -72,9 +130,18 @@
     "categoria": "clasico",
     "imagen": "./images/poke-salad-1.webp",
     "imagenTubo": "./images/poke-salad-2.webp",
-    "tags": ["Salmón", "Palta", "Bowl"],
+    "tags": [
+      "Salmón",
+      "Palta",
+      "Bowl"
+    ],
     "destacado": true,
-    "ingredientes": ["Salmón", "Palta", "arroz", "semillas"],
+    "ingredientes": [
+      "Salmón",
+      "Palta",
+      "arroz",
+      "semillas"
+    ],
     "precio": null
   },
   {
@@ -84,21 +151,41 @@
     "categoria": "panizado",
     "imagen": "./images/sushi-burger-1.webp",
     "imagenTubo": "./images/sushi-burger-2.webp",
-    "tags": ["Salmón", "Palta", "Rebozado", "Queso"],
+    "tags": [
+      "Salmón",
+      "Palta",
+      "Rebozado",
+      "Queso"
+    ],
     "destacado": true,
-    "ingredientes": ["Salmón", "Palta", "Queso", "arroz"],
+    "ingredientes": [
+      "Salmón",
+      "Palta",
+      "Queso",
+      "arroz"
+    ],
     "precio": null
   },
   {
     "id": "triangulitos-rebozados",
     "nombre": "Triangulitos Rebozados",
-    "descripcion": "Triángulos de sushi rebozados y crocantes, con interior de arroz, salmón y palta.",
+    "descripcion": "Triángulos de sushi rebozados y crocantes, con interior de arroz, salmón, palta y queso.",
     "categoria": "panizado",
     "imagen": "./images/triangulitos-rebozados-1.webp",
     "imagenTubo": "./images/triangulitos-rebozados-2.webp",
-    "tags": ["Salmón", "Palta", "Rebozado"],
+    "tags": [
+      "Salmón",
+      "Palta",
+      "Rebozado",
+      "Queso"
+    ],
     "destacado": true,
-    "ingredientes": ["Salmón", "Palta", "arroz"],
+    "ingredientes": [
+      "Salmón",
+      "Palta",
+      "arroz",
+      "Queso"
+    ],
     "precio": null
   }
 ]
